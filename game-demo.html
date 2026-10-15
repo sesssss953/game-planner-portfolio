@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>猫猫特攻队：像素对决</title>
+  <style>
+    :root{--ink:#1d1a18;--panel:#332d2a;--panel2:#443a35;--cream:#fff1d2;--lime:#b8d66a;--red:#ef6a57;--blue:#68c4c7;--gold:#f6bd59;--line:#100e0d;--muted:#b6a796;--peach:#e99a62;--fur:#e99a62;--fur-dark:#b9683f;--fur-light:#ffd5b2}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#171210;color:var(--cream);font-family:"Courier New",monospace;overflow:hidden;image-rendering:pixelated}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;background:repeating-linear-gradient(0deg,rgba(0,0,0,.04) 0,rgba(0,0,0,.04) 1px,transparent 1px,transparent 4px);mix-blend-mode:multiply}
+    .shell{height:100dvh;display:grid;grid-template-rows:auto 1fr auto;max-width:1440px;margin:auto;background:#211b18;border-inline:4px solid #0d0a09;box-shadow:0 0 60px #000}
+    header{min-height:62px;display:flex;align-items:center;gap:22px;padding:8px 16px;border-bottom:4px solid var(--line);background:linear-gradient(90deg,#3b302b,#2b2823);box-shadow:inset 0 -2px #655044;position:relative}
+    header:after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:4px;background:repeating-linear-gradient(90deg,var(--gold) 0 18px,#171310 18px 28px)}
+    .brand{display:flex;align-items:center;gap:12px;white-space:nowrap}.brand-mark{width:38px;height:31px;background:var(--fur);border:4px solid var(--ink);box-shadow:inset -5px -5px var(--fur-dark),4px 4px 0 #0b0c0b;position:relative;margin-top:6px}.brand-mark:before,.brand-mark:after{content:"";position:absolute;width:11px;height:11px;background:var(--fur);border:4px solid var(--ink);top:-12px;z-index:-1}.brand-mark:before{left:-4px;transform:skew(12deg)}.brand-mark:after{right:-4px;transform:skew(-12deg)}.brand-mark i{position:absolute;left:6px;top:7px;width:4px;height:4px;background:var(--ink);box-shadow:14px 0 var(--ink),7px 7px var(--fur-light)}
+    h1{font-size:17px;line-height:1;margin:0;letter-spacing:2px;color:#fff2d6;text-shadow:2px 2px #0b0c0b}.tag{font-size:9px;color:var(--gold);letter-spacing:1px;margin-top:5px}
+    .stats{display:flex;gap:18px;align-items:center;flex:1}.stat{min-width:130px}.stat-row{font-size:10px;display:flex;justify-content:space-between;margin-bottom:3px;color:#b9bea9}.meter{height:12px;border:3px solid #0d0f0d;background:#121412;box-shadow:2px 2px #080908}.fill{height:100%;transition:width .2s}.fill.hp{background:var(--red)}.fill.armor{background:var(--blue)}
+    .round{font-size:11px;color:var(--muted);text-align:right}.round b{display:block;color:var(--gold);font-size:15px}.coin-pill{font-size:10px;color:#281a0d;background:var(--gold);border:3px solid #17100b;padding:6px 9px;box-shadow:3px 3px #0a0705;white-space:nowrap}.coin-pill b{font-size:13px}.icon-btn{font:700 11px "Courier New";color:var(--cream);background:#51433b;border:3px solid #130f0d;box-shadow:3px 3px #090706;padding:8px 10px;cursor:pointer}.icon-btn:hover{background:#6a5041;color:#fff}.icon-btn:active{translate:2px 2px;box-shadow:1px 1px #090a09}
+    main{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:0}.arena-wrap{position:relative;min-width:0;background:#120f0d;padding:12px;display:grid;place-items:center}.canvas-frame{position:relative;width:100%;height:100%;border:4px solid #0d0a08;box-shadow:0 0 0 2px #705347,8px 8px 0 #080605;overflow:hidden;background:#283126}
+    canvas{display:block;width:100%;height:100%;object-fit:contain;cursor:crosshair}.grain{position:absolute;inset:0;pointer-events:none;opacity:.08;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:5px 5px}
+    .message{position:absolute;left:50%;top:15%;translate:-50% 0;padding:8px 14px;background:#11170fd9;border:3px solid var(--lime);box-shadow:5px 5px #080908;font-weight:bold;font-size:12px;letter-spacing:1px;opacity:0;transform:translateY(-8px);transition:.15s;pointer-events:none}.message.show{opacity:1;transform:none}
+    .prompt{position:absolute;left:50%;bottom:24px;translate:-50%;font-size:11px;font-weight:900;color:#171310;background:#fff8cf;border:3px solid #171310;padding:8px 12px;display:none;white-space:nowrap;box-shadow:4px 4px #ef785d;text-shadow:none}.prompt.show{display:block}.key{color:#111;background:var(--cream);padding:1px 4px;border:2px solid #111;box-shadow:1px 1px #777;font-weight:bold}
+    aside{min-height:0;background:#2b2420;border-left:4px solid #0f0c0b;padding:14px;display:flex;flex-direction:column;gap:12px;box-shadow:inset 5px 0 #46372f}.panel-head{display:flex;justify-content:space-between;align-items:end;border-bottom:3px solid #715342;padding-bottom:8px}.panel-head h2{font-size:14px;margin:0;letter-spacing:2px;color:#ffe6b8}.weight{font-size:9px;color:var(--muted);background:#17120f;padding:3px 6px}
+    .paperdoll{display:grid;grid-template-columns:72px 1fr;gap:10px;background:#1c1714;border:3px solid #0c0908;padding:9px;box-shadow:inset 0 0 0 2px #58443a}.avatar{height:72px;position:relative;background:#3a4534;border:2px dashed #8a735f;overflow:hidden}.avatar:before{content:"";position:absolute;width:34px;height:35px;left:17px;top:27px;background:var(--fur);border:3px solid #16110f;box-shadow:inset -6px -5px var(--fur-dark)}.avatar:after{content:"";position:absolute;width:26px;height:24px;left:21px;top:9px;background:var(--fur);border:3px solid #16110f;box-shadow:inset -4px -3px var(--fur-dark);clip-path:polygon(0 25%,12% 0,32% 26%,68% 26%,88% 0,100% 25%,100% 100%,0 100%)}.avatar i{position:absolute;z-index:3;width:4px;height:4px;background:#17110e;left:28px;top:22px;box-shadow:11px 0 #17110e,6px 7px var(--fur-light)}.loadout{font-size:9px;color:#b6a798;line-height:1.55}.loadout b{color:var(--cream)}.switch-weapon{margin-top:3px;width:100%;font:700 8px "Courier New";color:#24170e;background:var(--gold);border:2px solid #100c09;padding:3px;cursor:pointer;box-shadow:2px 2px #080605}.switch-weapon:active{translate:1px 1px;box-shadow:1px 1px #080605}
+    .inventory{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.slot{aspect-ratio:1;position:relative;background:#191512;border:3px solid #0b0908;box-shadow:inset 0 0 0 2px #554238,3px 3px #100c0a;cursor:pointer;display:grid;place-items:center;transition:filter .1s,transform .1s}.slot:hover{filter:brightness(1.3);transform:translateY(-2px)}.slot.selected{outline:3px solid var(--gold);outline-offset:-5px;background:#2c211a}.slot.equipped:before{content:"ON";position:absolute;right:2px;top:2px;background:var(--lime);color:#14200e;font-size:7px;padding:1px 2px;z-index:2}.slot.empty:after{content:"";width:40%;height:40%;border:2px dashed #4c3c34}.slot-key{position:absolute;left:3px;top:2px;color:#8d7768;font-size:8px}.slot-count{position:absolute;right:3px;bottom:2px;font-size:9px;color:#fff;text-shadow:1px 1px #000}.pixel-icon{width:30px;height:30px;position:relative;display:grid;place-items:center;font-size:25px;filter:drop-shadow(2px 2px #000)}
+    .item-card{min-height:88px;background:#191411;border:3px solid #0b0908;padding:10px;position:relative;box-shadow:inset 0 0 0 2px #3e3029}.item-card .rarity{font-size:8px;color:var(--lime);letter-spacing:1px}.item-card h3{font-size:12px;margin:5px 0;color:var(--gold)}.item-card p{font-size:9px;line-height:1.5;color:#b3a395;margin:0 0 8px}.use-btn{width:100%;font:700 10px "Courier New";background:var(--gold);border:3px solid #101210;box-shadow:3px 3px #070807;padding:6px;color:#21170e;cursor:pointer}.use-btn:disabled{background:#50443d;color:#28211d}.tips{margin-top:auto;border-top:2px dashed #6b5447;padding-top:9px;font-size:8px;line-height:1.7;color:#aa988a}
+    footer{min-height:38px;background:#171a16;border-top:4px solid #090b09;display:flex;align-items:center;justify-content:space-between;padding:6px 14px;font-size:9px;color:#7f887a}.controls span{margin-right:14px;color:#b5bda9}.status-dot{display:inline-block;width:7px;height:7px;background:var(--lime);margin-right:6px;box-shadow:0 0 6px var(--lime)}
+    .overlay{position:fixed;inset:0;background:#0a0c09e8;z-index:15;display:none;place-items:center}.overlay.show{display:grid}.modal{width:min(420px,90vw);text-align:center;background:#242a22;border:4px solid #080a08;box-shadow:0 0 0 3px #58634f,10px 10px #060706;padding:28px}.modal .big{font-size:26px;color:var(--gold);letter-spacing:4px;text-shadow:3px 3px #000}.modal p{font-size:11px;color:#aab2a3;line-height:1.8}.modal button{font:700 12px "Courier New";padding:10px 22px;background:var(--lime);border:3px solid #080a08;box-shadow:4px 4px #000;cursor:pointer}
+    .home-overlay{position:fixed;inset:0;z-index:18;background:#100c0bea;display:none;place-items:center;padding:22px}.home-overlay.show{display:grid}.home-window{width:min(1080px,96vw);height:min(720px,94vh);background:#2b211c;border:5px solid #0c0908;box-shadow:0 0 0 3px #83614b,14px 14px #070504;display:grid;grid-template-rows:auto 1fr;overflow:hidden}.home-head{display:flex;align-items:center;gap:14px;padding:11px 16px;background:#4a3529;border-bottom:4px solid #130e0b}.home-head h2{margin:0;font-size:18px;letter-spacing:3px;color:#ffe8bd}.home-head p{margin:0;color:#c9aa91;font-size:9px;flex:1}.home-balance{color:#2a1909;background:var(--gold);border:3px solid #1b1009;padding:7px 12px;font-size:11px}.home-close{font:700 11px "Courier New";color:#fff0d1;background:#7c4937;border:3px solid #160e0a;box-shadow:3px 3px #0a0705;padding:8px 12px;cursor:pointer}
+    .home-content{display:grid;grid-template-columns:minmax(440px,1.2fr) minmax(350px,.8fr);min-height:0}.room-wrap{padding:18px;background:#1b1512}.room-label{display:flex;justify-content:space-between;font-size:9px;color:#bca18e;margin-bottom:8px}.room-scene{height:100%;min-height:420px;position:relative;overflow:hidden;border:4px solid #0d0907;background:linear-gradient(#94745e 0 57%,#6b4a35 57%);box-shadow:inset 0 0 0 3px #b48b6c}.room-scene:before{content:"";position:absolute;left:0;right:0;top:57%;height:43%;background:repeating-linear-gradient(90deg,#694831 0 42px,#583b2b 42px 45px);border-top:6px solid #3d2a20}.room-scene:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 7px,#0000000c 7px 8px);pointer-events:none;z-index:10}
+    .room-windowpane{position:absolute;left:8%;top:9%;width:29%;height:33%;background:#75a6a8;border:8px solid #4d3328;box-shadow:inset 0 0 0 4px #d9c39f,5px 5px #3b291f}.room-windowpane:before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:4px solid #4d3328}.room-windowpane:after{content:"";position:absolute;left:0;right:0;top:50%;border-top:4px solid #4d3328}.curtain{position:absolute;left:5%;top:6%;width:35%;height:40%;border-inline:20px solid #b65f4d;border-top:8px solid #5f382e;z-index:2;filter:drop-shadow(3px 3px #37251e)}
+    .shelf{position:absolute;left:47%;top:12%;width:24%;height:8px;background:#563728;border:3px solid #291b15;box-shadow:4px 5px #3a271e}.shelf:before{content:"";position:absolute;width:15px;height:24px;background:#8bb26d;left:12px;bottom:5px;border:3px solid #2c3d24;box-shadow:23px 6px 0 #d08c54,26px 3px 0 #5c3527}.shelf:after{content:"";position:absolute;width:9px;height:19px;background:#68a6a3;right:22px;bottom:5px;border:3px solid #273f3e}
+    .bed{--bed:#80533b;--blanket:#718d60;position:absolute;left:5%;bottom:7%;width:39%;height:26%;background:var(--bed);border:5px solid #2a1c16;box-shadow:7px 7px #39261e;z-index:3}.bed:before{content:"";position:absolute;left:9%;right:5%;top:13%;bottom:11%;background:var(--blanket);border:4px solid #30231c;box-shadow:inset 0 -13px #0000001f}.bed:after{content:"";position:absolute;left:10%;top:17%;width:25%;height:35%;background:#f4dfbb;border:3px solid #47372b}.bed-post{position:absolute;left:-8px;right:-8px;top:-34px;height:38px;border-left:12px solid var(--bed);border-right:12px solid var(--bed);filter:drop-shadow(0 0 2px #2a1c16)}
+    .wardrobe{--wardrobe:#76503b;position:absolute;right:5%;top:8%;width:22%;height:46%;background:var(--wardrobe);border:6px solid #2a1b15;box-shadow:7px 7px #3a271e;z-index:3}.wardrobe:before{content:"";position:absolute;left:50%;top:4%;bottom:4%;border-left:4px solid #35231b}.wardrobe:after{content:"";position:absolute;left:40%;top:50%;width:5px;height:5px;background:var(--gold);box-shadow:17px 0 var(--gold)}.wardrobe-top{position:absolute;left:-9px;right:-9px;top:-12px;height:12px;background:var(--wardrobe);border:4px solid #2a1b15}
+    .rug{--rug:#c56f55;position:absolute;left:40%;bottom:8%;width:34%;height:23%;background:var(--rug);border:5px solid #412820;box-shadow:inset 0 0 0 6px #f2c26a;z-index:2;transform:skewX(-5deg)}.rug:after{content:"";position:absolute;inset:22%;border:4px dashed #ffe2a1}
+    .lamp{--lamp:#e1b65b;position:absolute;right:4%;bottom:7%;width:8px;height:32%;background:#3d3027;border:3px solid #17110e;z-index:4}.lamp:before{content:"";position:absolute;left:-17px;top:-24px;width:36px;height:27px;background:var(--lamp);border:4px solid #251a14;clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)}.lamp:after{content:"";position:absolute;left:-14px;bottom:-7px;width:30px;height:8px;background:#4b392c;border:3px solid #17110e}
+    .room-cat{position:absolute;left:56%;bottom:19%;width:50px;height:36px;background:var(--fur);border:4px solid #1b120e;box-shadow:inset -8px -6px var(--fur-dark),5px 5px #0005;z-index:5}.room-cat:before{content:"";position:absolute;right:-19px;top:-11px;width:28px;height:28px;background:var(--fur);border:4px solid #1b120e;clip-path:polygon(0 25%,14% 0,34% 24%,68% 24%,88% 0,100% 25%,100% 100%,0 100%)}.room-cat:after{content:"";position:absolute;left:-20px;top:4px;width:23px;height:9px;background:var(--fur-dark);border:4px solid #1b120e;transform:rotate(-24deg);transform-origin:right}.room-cat i{position:absolute;z-index:2;right:-12px;top:0;width:4px;height:4px;background:#18100c;box-shadow:11px 0 #18100c,7px 9px var(--fur-light)}
+    .home-shop{min-height:0;background:#30251f;border-left:4px solid #100c09;display:grid;grid-template-rows:auto 1fr}.home-tabs{display:flex;gap:6px;padding:12px;border-bottom:3px solid #654a3b}.home-tab{flex:1;font:700 10px "Courier New";color:#c8ac96;background:#1e1714;border:3px solid #0c0908;padding:9px;cursor:pointer}.home-tab.active{color:#27190e;background:var(--gold)}.shop-scroll{overflow:auto;padding:12px}.shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.shop-section{grid-column:1/-1;font-size:9px;color:#d6b897;border-bottom:2px dashed #745545;padding:7px 2px 4px;letter-spacing:2px}.shop-card{background:#1d1714;border:3px solid #0c0908;box-shadow:inset 0 0 0 2px #4e3b32;padding:9px;color:#f6e6cb;text-align:left;min-height:112px;position:relative}.shop-card.active{outline:3px solid var(--lime);outline-offset:-6px}.shop-card h3{font-size:10px;margin:5px 0;color:#ffdda0}.shop-card p{font-size:8px;line-height:1.5;color:#a99587;margin:0 0 8px}.shop-card button{width:100%;font:700 8px "Courier New";background:var(--gold);border:2px solid #100b08;padding:5px;cursor:pointer}.shop-card button:disabled{background:#574b43;color:#97897e}.cat-swatch{height:42px;background:#3b4937;border:2px solid #17120f;display:grid;place-items:center}.mini-cat{width:35px;height:27px;background:var(--c);border:3px solid #18110e;box-shadow:inset -6px -4px var(--cd);position:relative}.mini-cat:before{content:"";position:absolute;right:-9px;top:-7px;width:19px;height:19px;background:var(--c);border:3px solid #18110e;clip-path:polygon(0 28%,15% 0,36% 27%,68% 27%,88% 0,100% 28%,100% 100%,0 100%)}.furniture-swatch{height:34px;border:2px solid #15100d;background:linear-gradient(135deg,var(--a),var(--b));position:relative}.furniture-swatch:after{content:"";position:absolute;inset:8px;border:3px solid #ffffff55}.home-notice{grid-column:1/-1;min-height:20px;color:var(--gold);font-size:9px;text-align:center;padding-top:4px}
+    .map-overlay{position:fixed;inset:0;z-index:19;background:#f2eee8eb;display:none;place-items:center}.map-overlay.show{display:grid}.map-modal{width:min(840px,92vw);background:#fff;border:4px solid #211e1b;box-shadow:12px 12px #c9c2b9;padding:22px;color:#2a2723}.map-modal h2{margin:0 0 5px;font-size:20px}.map-modal>p{font-size:9px;color:#777067;margin:0 0 18px}.map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.map-card{background:#faf8f4;border:3px solid #24211d;padding:8px;text-align:left;box-shadow:4px 4px #dad4cc}.map-card.active{outline:4px solid #ef785d;outline-offset:-7px}.map-preview{height:92px;background:linear-gradient(135deg,var(--m1),var(--m2));border:3px solid #24211d;position:relative;overflow:hidden}.map-preview:after{content:"";position:absolute;inset:12px;background:repeating-linear-gradient(90deg,#ffffff33 0 12px,#00000018 12px 15px);border:3px solid #ffffff66}.map-card h3{font-size:12px;margin:9px 0 4px}.map-card p{font-size:8px;color:#777;min-height:25px}.map-card button,.map-close{width:100%;font:700 9px "Courier New";padding:7px;background:#ef785d;border:3px solid #211e1b;cursor:pointer}.map-close{margin-top:14px;background:#fff;width:auto}.buff-hud{position:absolute;left:15px;bottom:14px;display:flex;gap:5px;pointer-events:none}.buff-chip{display:none;background:#fff;color:#222;border:2px solid #222;padding:4px 6px;font-size:8px;box-shadow:2px 2px #222}.buff-chip.show{display:block}
+    /* light command-console theme */
+    html,body{background:#e8e5df;color:#292622;font-family:"Microsoft YaHei","Courier New",monospace}.shell{background:#f7f5f0;border-color:#292622}.shell header{background-color:#fff;background-image:radial-gradient(circle at 12px 10px,#f3cec6 0 3px,transparent 3px),radial-gradient(circle at 7px 16px,#f3cec6 0 2px,transparent 2px);background-size:48px 34px;border-color:#292622;box-shadow:inset 0 -2px #ded9d2}.shell header:after{background:repeating-linear-gradient(90deg,#ef785d 0 18px,#fff 18px 28px)}h1{color:#27231f;text-shadow:2px 2px #ddd}.tag{color:#d95e47}.stat-row{color:#59544d}.meter{background:#ebe7e1}.icon-btn{color:#28231f;background:#fff;border-color:#28231f;box-shadow:3px 3px #bbb4ab}.icon-btn:hover{background:#fff1ec;color:#222}.coin-pill{background:#ffd66b}.arena-wrap{background:#e6e2dc}.canvas-frame{border-color:#292622;box-shadow:0 0 0 2px #fff,8px 8px #bdb7ae}aside{background-color:#fbfaf7;background-image:radial-gradient(#efd8d0 1px,transparent 1px);background-size:12px 12px;border-color:#292622;box-shadow:inset 5px 0 #eee9e2}.panel-head{border-color:#d8d1c8}.panel-head h2{color:#2a2723}.weight,.paperdoll,.item-card,.slot{background:#fff;color:#292622;border-color:#292622;box-shadow:inset 0 0 0 2px #e3ded7,3px 3px #c8c1b8}.loadout,.item-card p,.tips{color:#6f6860}.slot.selected{background:#fff6e2}.switch-weapon,.use-btn{background:#ffd66b}footer{background:#fff;border-color:#292622;color:#777}.controls span{color:#555}.overlay{background:#f3f0eceb}.modal{background:#fff;color:#222;border-color:#222;box-shadow:0 0 0 3px #ddd,10px 10px #aaa}.home-overlay{background:#efebe6ed}.home-window{background:#fff;border-color:#24211d;box-shadow:0 0 0 3px #d2cbc2,14px 14px #aaa}.home-head{background:#fff;border-color:#24211d}.home-head h2{color:#26221e}.home-head p{color:#777}.home-content,.room-wrap{background:#f5f2ed}.home-shop{background:#fff;border-color:#24211d}.home-tabs{border-color:#d7d0c7}.home-tab{background:#f0ede8;color:#4e4943;border-color:#24211d}.home-tab.active{background:#ffd66b}.shop-card{background:#fff;color:#222;border-color:#24211d;box-shadow:inset 0 0 0 2px #e9e4de}.shop-card h3{color:#302923}.shop-card p{color:#777}.shop-section{color:#555;border-color:#bbb}.shop-card button{background:#ffd66b}.home-notice{color:#cf5a43}.market-icon{height:38px;display:grid;place-items:center;background:#f3f0eb;border:2px solid #292622;color:var(--c);font-size:22px}
+    .touch-controls{display:none;position:absolute;inset:0;pointer-events:none}.stick,.shoot-touch{position:absolute;pointer-events:auto;touch-action:none;user-select:none}.stick{left:18px;bottom:18px;width:86px;height:86px;border:3px solid #dce5c955;border-radius:50%;background:#12161166}.knob{position:absolute;width:36px;height:36px;border:3px solid #111;border-radius:50%;background:#b6d65ecc;left:22px;top:22px}.shoot-touch{right:20px;bottom:20px;width:68px;height:68px;border-radius:50%;border:4px solid #220f0b;background:#e45b44cc;color:white;font:700 10px "Courier New"}
+    @media(max-width:800px){.shell{grid-template-rows:auto 1fr}.brand .tag,.round,footer{display:none}header{min-height:50px;padding:6px 9px;gap:7px}.brand-mark{width:26px;height:26px}.brand h1{font-size:11px}.stats{gap:5px}.stat{min-width:60px}.stat-row{font-size:8px}.meter{height:9px;border-width:2px}.coin-pill{padding:4px;font-size:8px}.home-btn-label{display:none}main{display:block;position:relative}.arena-wrap{height:100%;padding:5px}.canvas-frame{box-shadow:none}.touch-controls{display:block}aside{position:absolute;z-index:10;right:8px;top:8px;width:260px;max-height:calc(100% - 16px);display:none;border:3px solid #0b0d0b;overflow:auto}aside.open{display:flex}.icon-btn{padding:6px}.message{top:10%;font-size:9px}.prompt{bottom:112px}.home-overlay{padding:5px}.home-window{width:98vw;height:98vh}.home-head p{display:none}.home-content{display:block;overflow:auto}.room-wrap{height:330px;padding:8px}.room-scene{min-height:285px}.home-shop{border-left:0;border-top:4px solid #100c09}.shop-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:800px){.map-modal{max-height:95vh;overflow:auto}.map-grid{grid-template-columns:1fr}.map-preview{height:55px}.map-card p{min-height:0}.home-tab{font-size:8px;padding:7px 3px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand"><div class="brand-mark"><i></i></div><div><h1>猫猫特攻队</h1><div class="tag">今天也要勇敢出门</div></div></div>
+      <div class="stats">
+        <div class="stat"><div class="stat-row"><span>猫猫活力</span><b id="hpText">100 / 100</b></div><div class="meter"><div class="fill hp" id="hpBar" style="width:100%"></div></div></div>
+        <div class="stat"><div class="stat-row"><span>毛茸护盾</span><b id="armorText">25 / 50</b></div><div class="meter"><div class="fill armor" id="armorBar" style="width:50%"></div></div></div>
+      </div>
+      <div class="round">第 <span id="levelText">1</span> / 5 关 <b><span id="kills">0</span> / <span id="goalText">4</span></b></div>
+      <div class="coin-pill">小金币 <b id="coinText">0</b></div>
+      <button class="icon-btn" id="mapBtn">去哪里 [M]</button>
+      <button class="icon-btn" id="homeBtn"><span class="home-btn-label">回家 </span>[H]</button>
+      <button class="icon-btn" id="pauseBtn">Ⅱ 歇一会</button>
+      <button class="icon-btn" id="bagBtn">小猫包 [B]</button>
+    </header>
+    <main>
+      <section class="arena-wrap">
+        <div class="canvas-frame">
+          <canvas id="game" width="960" height="540" aria-label="像素射击游戏战场"></canvas>
+          <div class="grain"></div>
+          <div class="message" id="message">获得物品</div>
+          <div class="prompt" id="prompt">凑近一点，猫猫会自己叼起来</div>
+          <div class="buff-hud"><div class="buff-chip" id="damageBuff">吃饱啦：爪力提升</div><div class="buff-chip" id="speedBuff">小鱼干能量：跑得更快</div></div>
+          <div class="touch-controls">
+            <div class="stick" id="stick"><div class="knob" id="knob"></div></div>
+            <button class="shoot-touch" id="shootTouch">开火</button>
+          </div>
+        </div>
+      </section>
+      <aside id="inventoryPanel">
+        <div class="panel-head"><h2>猫猫的小背包</h2><div class="weight"><span id="usedSlots">2</span> / 8 格</div></div>
+        <div class="paperdoll"><div class="avatar"><i></i></div><div class="loadout">当前武器　<b id="weaponName">生锈手枪</b><br>弹药　<b><span id="ammoText">12</span> / ∞</b>　伤害　<b id="damageText">18</b><button class="switch-weapon" id="switchBtn">Q / 滚轮　切换武器</button></div></div>
+        <div class="inventory" id="inventory"></div>
+        <div class="item-card" id="itemCard"><div class="rarity">选择一个物品</div><h3>— 空槽位 —</h3><p>靠近战场掉落物即可自动放入猫包。</p><button class="use-btn" id="useBtn" disabled>使用 / 装备</button></div>
+        <div class="tips">胡须雷达在线 // 尾巴平衡稳定<br>WASD / 方向键 移动　·　鼠标 瞄准<br>左键 / 空格 射击　·　靠近自动拾取<br>Q / 滚轮切枪　·　1—8 使用猫包物品</div>
+      </aside>
+    </main>
+    <footer><div class="controls"><span>WASD 猫步</span><span>鼠标 瞄准射击</span><span>靠近 自动拾取</span><span>Q / 滚轮 切枪</span><span>H 家园</span><span>B 猫包</span></div><div><i class="status-dot"></i>喵星频道稳定</div></footer>
+  </div>
+  <div class="overlay" id="overlay"><div class="modal"><div class="big" id="resultTitle">战斗暂停</div><p id="resultText">喘口气。背包和战场状态已保留。</p><button id="resumeBtn">继续战斗</button></div></div>
+  <div class="home-overlay" id="homeOverlay">
+    <section class="home-window">
+      <div class="home-head"><h2>猫猫的温暖小家</h2><p>把冒险带回来的宝贝换成新朋友和漂亮家具吧</p><div class="home-balance">小金币 <b id="homeCoins">0</b></div><button class="home-close" id="homeClose">继续冒险 [H]</button></div>
+      <div class="home-content">
+        <div class="room-wrap"><div class="room-label"><span>ROOM // 甜爪基地</span><span id="roomCatName">橘猫队长</span></div><div class="room-scene" id="roomScene"><div class="room-windowpane"></div><div class="curtain"></div><div class="shelf"></div><div class="bed"><i class="bed-post"></i></div><div class="wardrobe"><i class="wardrobe-top"></i></div><div class="rug"></div><div class="lamp"></div><div class="room-cat"><i></i></div></div></div>
+        <div class="home-shop"><div class="home-tabs"><button class="home-tab active" data-tab="cats">猫咪伙伴</button><button class="home-tab" data-tab="furniture">家具工坊</button><button class="home-tab" data-tab="market">家园商城</button></div><div class="shop-scroll"><div class="shop-grid" id="homeGrid"></div></div></div>
+      </div>
+    </section>
+  </div>
+  <div class="map-overlay" id="mapOverlay"><section class="map-modal"><h2>今天想去哪里冒险？</h2><p>换个地点会重新开始冒险，但家里的宝贝都会好好保存。</p><div class="map-grid" id="mapGrid"></div><button class="map-close" id="mapClose">猫猫再想想</button></section></div>
+  <script>
+    const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+    canvas.width=480; canvas.height=270; ctx.imageSmoothingEnabled=false;
+    const W=480,H=270,$=id=>document.getElementById(id);
+    const ui={hp:$('hpText'),hpBar:$('hpBar'),armor:$('armorText'),armorBar:$('armorBar'),kills:$('kills'),level:$('levelText'),goal:$('goalText'),ammo:$('ammoText'),weapon:$('weaponName'),damage:$('damageText'),slots:$('usedSlots'),inventory:$('inventory'),card:$('itemCard'),use:$('useBtn'),message:$('message'),prompt:$('prompt'),panel:$('inventoryPanel'),overlay:$('overlay'),title:$('resultTitle'),result:$('resultText'),resume:$('resumeBtn'),coin:$('coinText'),home:$('homeOverlay'),homeCoins:$('homeCoins'),homeGrid:$('homeGrid'),room:$('roomScene'),mapOverlay:$('mapOverlay'),mapGrid:$('mapGrid'),damageBuff:$('damageBuff'),speedBuff:$('speedBuff')};
+    const COLORS={ink:'#121612',cream:'#e8dfc2',red:'#e45b44',lime:'#b6d65e',blue:'#5db9c9',gold:'#efbd55',ground:'#303a2d'};
+    const CATS={
+      orange:{name:'橘猫队长',cost:0,fur:'#e99a62',dark:'#b9683f',light:'#ffd5b2',desc:'热情可靠的初始队员。'},
+      tuxedo:{name:'燕尾服猫',cost:35,fur:'#292c2c',dark:'#101212',light:'#f4ead6',desc:'穿着永久礼服的潜行专家。'},
+      siamese:{name:'暹罗猫',cost:55,fur:'#d9bc8b',dark:'#5b443d',light:'#f0ddbc',desc:'目光锐利的远程侦察员。'},
+      calico:{name:'三花猫',cost:80,fur:'#eee0c5',dark:'#c76f44',light:'#fff7df',desc:'带来好运的稀有战术猫。'},
+      british:{name:'英短蓝猫',cost:110,fur:'#87939b',dark:'#59636b',light:'#d7e0df',desc:'沉稳结实，最爱柔软沙发。'}
+    };
+    const FURNITURE={
+      bed:[{id:'bed_basic',name:'原木单人床',cost:0,a:'#80533b',b:'#718d60'},{id:'bed_cloud',name:'云朵软床',cost:45,a:'#d7cab6',b:'#8fc4c2'},{id:'bed_royal',name:'皇家猫窝床',cost:95,a:'#7a4667',b:'#e1ae55'}],
+      wardrobe:[{id:'wardrobe_basic',name:'橡木衣柜',cost:0,a:'#76503b',b:'#a5744d'},{id:'wardrobe_mint',name:'薄荷储物柜',cost:55,a:'#5f8f80',b:'#9cc6ae'},{id:'wardrobe_salmon',name:'鲑鱼衣橱',cost:105,a:'#a9574c',b:'#e68d68'}],
+      rug:[{id:'rug_basic',name:'暖阳地毯',cost:0,a:'#c56f55',b:'#f2c26a'},{id:'rug_ocean',name:'深海鱼纹毯',cost:40,a:'#3e7381',b:'#7fc2c3'},{id:'rug_night',name:'星夜绒毯',cost:85,a:'#403f70',b:'#d7bc61'}],
+      lamp:[{id:'lamp_basic',name:'旧式落地灯',cost:0,a:'#e1b65b',b:'#7a5d3a'},{id:'lamp_fish',name:'小鱼夜灯',cost:35,a:'#e77d59',b:'#ffd07a'},{id:'lamp_moon',name:'月球暖灯',cost:75,a:'#9fc7c5',b:'#e8f0c9'}]
+    };
+    const FURNITURE_LABEL={bed:'床铺',wardrobe:'衣柜',rug:'地毯',lamp:'灯具'};
+    const ITEM={
+      medkit:{name:'急救小鱼干',icon:'✚',rarity:'补给品 // 常见',desc:'猫咪专用应急口粮，恢复 35 点生命值。',color:'#e45b44',action:'heal'},
+      armor:{name:'猫爪护甲片',icon:'◆',rarity:'护具 // 优良',desc:'轻盈不碍猫步，恢复 25 点护甲。',color:'#5db9c9',action:'armor'},
+      shotgun:{name:'短管霰弹枪',icon:'⌐',rarity:'武器 // 稀有',desc:'近距离发射 5 枚弹丸。威力猛烈，但射速较慢。',color:'#efbd55',action:'weapon',damage:10,rate:.65,pellets:5,spread:.28,ammo:20},
+      smg:{name:'“胡蜂”冲锋枪',icon:'▰',rarity:'武器 // 优良',desc:'快速倾泻弹药，适合压制移动中的敌人。',color:'#b6d65e',action:'weapon',damage:9,rate:.11,pellets:1,spread:.08,ammo:48},
+      rifle:{name:'“鱼骨”步枪',icon:'═',rarity:'武器 // 精良',desc:'精准的中远距离步枪，单发伤害高、散布极低。',color:'#ff9360',action:'weapon',damage:25,rate:.3,pellets:1,spread:.018,ammo:30},
+      catfood:{name:'战术猫粮',icon:'▣',rarity:'家园补给 // 增益',desc:'使用后 20 秒内武器伤害提升 30%。',color:'#ef785d',action:'buffDamage',homeSupply:true},
+      fishsnack:{name:'能量小鱼干',icon:'><',rarity:'家园补给 // 增益',desc:'使用后 20 秒内移动速度提升 35%。',color:'#58a9b6',action:'buffSpeed',homeSupply:true}
+    };
+    const MATERIALS={yarn:{name:'旧毛线团',icon:'●',price:8,color:'#df6f72',desc:'家园工坊常用软材料。'},gear:{name:'发条零件',icon:'✣',price:14,color:'#77858c',desc:'稀有机械收藏品。'},catnip:{name:'野生猫薄荷',icon:'♣',price:11,color:'#67a367',desc:'带着清新的野外气味。'},collar:{name:'古董项圈',icon:'◇',price:22,color:'#d9a849',desc:'商人高价收购的收藏品。'}};
+    const MAPS={
+      yard:{name:'锈港货场',desc:'掩体密集，适合近距离交火。',colors:['#293326','#4e6547'],base:'#293326',path:'#31372d',grid:'#354330',obstacles:[{x:105,y:48,w:68,h:31,kind:'fence'},{x:329,y:39,w:48,h:62,kind:'tower'},{x:217,y:105,w:52,h:35,kind:'crate'},{x:56,y:179,w:73,h:28,kind:'fence'},{x:345,y:190,w:77,h:31,kind:'fence'},{x:203,y:219,w:43,h:27,kind:'crate'},{x:415,y:92,w:25,h:25,kind:'supply'},{x:151,y:137,w:27,h:24,kind:'supply'}],props:[{x:32,y:39,t:'puddle'},{x:430,y:155,t:'puddle'},{x:188,y:91,t:'grass'},{x:304,y:205,t:'grass'},{x:392,y:61,t:'rubble'},{x:35,y:232,t:'sign'}]},
+      harbor:{name:'潮汐码头',desc:'开阔通道与集装箱形成长射线。',colors:['#52777c','#253f49'],base:'#38565a',path:'#49686b',grid:'#5b7775',obstacles:[{x:55,y:42,w:95,h:25,kind:'fence'},{x:210,y:35,w:28,h:75,kind:'tower'},{x:325,y:55,w:100,h:26,kind:'fence'},{x:105,y:155,w:36,h:70,kind:'tower'},{x:237,y:177,w:78,h:28,kind:'fence'},{x:384,y:170,w:35,h:35,kind:'supply'}],props:[{x:30,y:100,t:'puddle'},{x:180,y:220,t:'puddle'},{x:445,y:130,t:'puddle'},{x:280,y:75,t:'rubble'},{x:42,y:230,t:'sign'}]},
+      snow:{name:'白霜研究所',desc:'冰冷明亮的设施，掩体间距均衡。',colors:['#d7e4e2','#90b6bd'],base:'#b7cecc',path:'#d4ded9',grid:'#91aaa9',obstacles:[{x:76,y:45,w:48,h:48,kind:'tower'},{x:188,y:60,w:96,h:24,kind:'fence'},{x:360,y:42,w:45,h:65,kind:'tower'},{x:50,y:185,w:100,h:25,kind:'fence'},{x:235,y:160,w:43,h:43,kind:'supply'},{x:344,y:195,w:80,h:25,kind:'fence'}],props:[{x:30,y:120,t:'puddle'},{x:315,y:115,t:'rubble'},{x:175,y:205,t:'grass'},{x:440,y:235,t:'sign'}]}
+    };
+    let currentMap='yard',obstacles=MAPS.yard.obstacles,mapProps=MAPS.yard.props;
+    const ENEMY_TYPES={
+      grunt:{name:'巡逻兵',hp:44,speed:37,rate:.85,dmg:10,bullet:130,range:110,r:8,color:'#a86850',accent:'#d88663'},
+      scout:{name:'疾跑兵',hp:28,speed:58,rate:.62,dmg:7,bullet:155,range:82,r:7,color:'#4f8c88',accent:'#79c5b9'},
+      heavy:{name:'铁甲兵',hp:92,speed:25,rate:1.12,dmg:18,bullet:120,range:95,r:11,color:'#8e4336',accent:'#d15a45'},
+      sniper:{name:'长耳狙击手',hp:36,speed:29,rate:1.65,dmg:23,bullet:215,range:175,r:8,color:'#66527d',accent:'#a487bd'},
+      raider:{name:'双枪掠夺者',hp:55,speed:44,rate:.42,dmg:6,bullet:145,range:120,r:9,color:'#9b713b',accent:'#e2ad55'},
+      boss:{name:'废土首领',hp:190,speed:23,rate:.5,dmg:14,bullet:170,range:125,r:14,color:'#7b3030',accent:'#f0bd50'}
+    };
+    const LEVELS=[{name:'热身巡逻',goal:4,types:['grunt','scout']},{name:'码头围攻',goal:5,types:['grunt','scout','raider']},{name:'铁甲小队',goal:6,types:['grunt','heavy','raider']},{name:'远程封锁',goal:7,types:['scout','sniper','heavy','raider']},{name:'首领来袭',goal:8,types:['heavy','sniper','raider','boss']}];
+    let keys={},mouse={x:320,y:135,down:false},touchMove={x:0,y:0},touchFire=false,paused=false,ended=false,last=0,elapsed=0,shake=0,selected=0,totalSpawned=0,kills=0,level=0,advancing=false,homeOpen=false,homeTab='cats';
+    let player,bullets,enemies,drops,coinDrops,homeDrops,particles,inventory,coins=0,unlockedCats=['orange'],selectedCat='orange',ownedFurniture=['bed_basic','wardrobe_basic','rug_basic','lamp_basic'],equippedFurniture={bed:'bed_basic',wardrobe:'wardrobe_basic',rug:'rug_basic',lamp:'lamp_basic'},materials={yarn:0,gear:0,catnip:0,collar:0},supplies={catfood:0,fishsnack:0};
+
+    function reset(){
+      player={x:238,y:166,r:8,hp:100,armor:25,angle:0,speed:82,cool:0,flash:0,weapon:'pistol',weaponSlot:-1,damageBuff:0,speedBuff:0};
+      const supplyItems=[];Object.entries(supplies).forEach(([type,count])=>{if(count>0)supplyItems.push({type,count})});
+      bullets=[];enemies=[];drops=[];coinDrops=[];homeDrops=[];particles=[];inventory=[{type:'medkit',count:2},{type:'armor',count:1},...supplyItems,null,null,null,null,null,null].slice(0,8);
+      totalSpawned=0;kills=0;level=0;advancing=false;elapsed=0;shake=0;selected=0;paused=false;ended=false;homeOpen=false;ui.overlay.classList.remove('show');ui.home.classList.remove('show');ui.level.textContent=1;ui.goal.textContent=LEVELS[0].goal;ui.kills.textContent=0;
+      spawnEnemy();spawnEnemy();spawnDrop(290,147,'smg');renderInventory();syncUI();
+    }
+    function loadProgress(){
+      try{const d=JSON.parse(localStorage.getItem('whiskerHome')||'{}');coins=Number.isFinite(d.coins)?d.coins:0;unlockedCats=Array.isArray(d.cats)&&d.cats.length?d.cats.filter(id=>CATS[id]):['orange'];selectedCat=unlockedCats.includes(d.selectedCat)?d.selectedCat:'orange';ownedFurniture=Array.isArray(d.furniture)?d.furniture:['bed_basic','wardrobe_basic','rug_basic','lamp_basic'];equippedFurniture={...equippedFurniture,...(d.equipped||{})};materials={...materials,...(d.materials||{})};supplies={...supplies,...(d.supplies||{})};currentMap=MAPS[d.map]?d.map:'yard';obstacles=MAPS[currentMap].obstacles;mapProps=MAPS[currentMap].props}catch(e){}
+      ['bed_basic','wardrobe_basic','rug_basic','lamp_basic'].forEach(id=>{if(!ownedFurniture.includes(id))ownedFurniture.push(id)});applyCat();updateCoins();
+    }
+    function saveProgress(){try{localStorage.setItem('whiskerHome',JSON.stringify({coins,cats:unlockedCats,selectedCat,furniture:ownedFurniture,equipped:equippedFurniture,materials,supplies,map:currentMap}))}catch(e){}}
+    function updateCoins(){ui.coin.textContent=coins;ui.homeCoins.textContent=coins}
+    function applyCat(){const c=CATS[selectedCat]||CATS.orange;document.documentElement.style.setProperty('--fur',c.fur);document.documentElement.style.setProperty('--fur-dark',c.dark);document.documentElement.style.setProperty('--fur-light',c.light);$('roomCatName').textContent=c.name}
+    function furnitureItem(category,id){return FURNITURE[category].find(v=>v.id===id)||FURNITURE[category][0]}
+    function applyFurniture(){
+      const bed=furnitureItem('bed',equippedFurniture.bed),wardrobe=furnitureItem('wardrobe',equippedFurniture.wardrobe),rug=furnitureItem('rug',equippedFurniture.rug),lamp=furnitureItem('lamp',equippedFurniture.lamp);
+      ui.room.querySelector('.bed').style.cssText=`--bed:${bed.a};--blanket:${bed.b}`;ui.room.querySelector('.wardrobe').style.setProperty('--wardrobe',wardrobe.a);ui.room.querySelector('.rug').style.setProperty('--rug',rug.a);ui.room.querySelector('.lamp').style.setProperty('--lamp',lamp.a);
+    }
+    function homeNotice(text){let n=$('homeNotice');if(n)n.textContent=text}
+    function renderHome(){
+      updateCoins();applyCat();applyFurniture();document.querySelectorAll('.home-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===homeTab));
+      if(homeTab==='cats'){
+        ui.homeGrid.innerHTML=Object.entries(CATS).map(([id,c])=>{const owned=unlockedCats.includes(id),active=selectedCat===id;return `<article class="shop-card ${active?'active':''}"><div class="cat-swatch"><div class="mini-cat" style="--c:${c.fur};--cd:${c.dark}"></div></div><h3>${c.name}</h3><p>${c.desc}</p><button data-cat="${id}" ${active?'disabled':''}>${active?'当前出战':owned?'选择出战':`金币 ${c.cost}　兑换`}</button></article>`}).join('')+'<div class="home-notice" id="homeNotice">猫咪品种只改变外观，不影响战斗数值。</div>';
+        ui.homeGrid.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>chooseCat(b.dataset.cat));
+      }else if(homeTab==='furniture'){
+        ui.homeGrid.innerHTML=Object.entries(FURNITURE).map(([category,list])=>`<div class="shop-section">${FURNITURE_LABEL[category]}</div>`+list.map(f=>{const owned=ownedFurniture.includes(f.id),active=equippedFurniture[category]===f.id;return `<article class="shop-card ${active?'active':''}"><div class="furniture-swatch" style="--a:${f.a};--b:${f.b}"></div><h3>${f.name}</h3><p>${owned?'已收藏，可随时替换。':'购买后永久收藏。'}</p><button data-furniture="${category}:${f.id}" ${active?'disabled':''}>${active?'房间使用中':owned?'摆入房间':`金币 ${f.cost}　兑换`}</button></article>`}).join('')).join('')+'<div class="home-notice" id="homeNotice">家具购买后永久保留，可反复更换。</div>';
+        ui.homeGrid.querySelectorAll('[data-furniture]').forEach(b=>b.onclick=()=>{const [category,id]=b.dataset.furniture.split(':');chooseFurniture(category,id)});
+      }else{
+        ui.homeGrid.innerHTML='<div class="shop-section">战场收藏品 · 出售</div>'+Object.entries(MATERIALS).map(([id,m])=>`<article class="shop-card"><div class="market-icon" style="--c:${m.color}">${m.icon}</div><h3>${m.name} × ${materials[id]}</h3><p>${m.desc}</p><button data-sell="${id}" ${materials[id]?'' :'disabled'}>出售 1 件　+${m.price} 金币</button></article>`).join('')+'<div class="shop-section">战斗补给 · 购买</div>'+[{id:'catfood',cost:18},{id:'fishsnack',cost:14}].map(v=>{const d=ITEM[v.id];return `<article class="shop-card"><div class="market-icon" style="--c:${d.color}">${d.icon}</div><h3>${d.name} × ${supplies[v.id]}</h3><p>${d.desc}</p><button data-buy="${v.id}:${v.cost}">购买 1 份　-${v.cost} 金币</button></article>`}).join('')+'<div class="home-notice" id="homeNotice">购买的食品会放入猫包，可在战斗中使用。</div>';
+        ui.homeGrid.querySelectorAll('[data-sell]').forEach(b=>b.onclick=()=>sellMaterial(b.dataset.sell));ui.homeGrid.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{const [id,cost]=b.dataset.buy.split(':');buySupply(id,+cost)});
+      }
+    }
+    function chooseCat(id){const c=CATS[id];if(!unlockedCats.includes(id)){if(coins<c.cost){homeNotice(`金币不足，还需要 ${c.cost-coins} 枚。`);return}coins-=c.cost;unlockedCats.push(id)}selectedCat=id;saveProgress();renderHome()}
+    function chooseFurniture(category,id){const f=furnitureItem(category,id);if(!ownedFurniture.includes(id)){if(coins<f.cost){homeNotice(`金币不足，还需要 ${f.cost-coins} 枚。`);return}coins-=f.cost;ownedFurniture.push(id)}equippedFurniture[category]=id;saveProgress();renderHome()}
+    function sellMaterial(id){if(materials[id]<1)return;materials[id]--;coins+=MATERIALS[id].price;saveProgress();renderHome()}
+    function buySupply(id,cost){if(coins<cost){homeNotice(`金币不足，还需要 ${cost-coins} 枚。`);return}coins-=cost;supplies[id]++;const stack=inventory.find(v=>v&&v.type===id);if(stack)stack.count++;else{const i=inventory.findIndex(v=>!v);if(i>=0)inventory[i]={type:id,count:1}}saveProgress();renderInventory();renderHome()}
+    function openHome(){if(ended||paused)return;homeOpen=true;paused=true;ui.home.classList.add('show');renderHome()}
+    function closeHome(){homeOpen=false;ui.home.classList.remove('show');if(!ended)paused=false}
+    function renderMaps(){ui.mapGrid.innerHTML=Object.entries(MAPS).map(([id,m])=>`<article class="map-card ${currentMap===id?'active':''}"><div class="map-preview" style="--m1:${m.colors[0]};--m2:${m.colors[1]}"></div><h3>${m.name}</h3><p>${m.desc}</p><button data-map="${id}">${currentMap===id?'重新进入':'选择此地图'}</button></article>`).join('');ui.mapGrid.querySelectorAll('[data-map]').forEach(b=>b.onclick=()=>selectMap(b.dataset.map))}
+    function openMaps(){if(paused||ended)return;paused=true;ui.mapOverlay.classList.add('show');renderMaps()}
+    function closeMaps(){ui.mapOverlay.classList.remove('show');if(!ended)paused=false}
+    function selectMap(id){currentMap=id;obstacles=MAPS[id].obstacles;mapProps=MAPS[id].props;saveProgress();ui.mapOverlay.classList.remove('show');reset();notify('进入地图：'+MAPS[id].name)}
+    function notify(text,color=COLORS.lime){clearTimeout(notify.t);ui.message.textContent=text;ui.message.style.borderColor=color;ui.message.classList.add('show');notify.t=setTimeout(()=>ui.message.classList.remove('show'),1200)}
+    function addItem(type){
+      const def=ITEM[type];
+      if(def.action!=='weapon'){
+        const stack=inventory.find(v=>v&&v.type===type);
+        if(stack){stack.count++;renderInventory();return true}
+      }
+      const i=inventory.findIndex(v=>!v); if(i<0){notify('背包已满',COLORS.red);return false}
+      inventory[i]={type,count:def.action==='weapon'?def.ammo:1};renderInventory();return true;
+    }
+    function useItem(index){
+      const item=inventory[index];if(!item)return;const def=ITEM[item.type];
+      if(def.action==='heal'){if(player.hp>=100){notify('生命值已满',COLORS.gold);return}player.hp=Math.min(100,player.hp+35);item.count--;notify('+35 生命',COLORS.red)}
+      if(def.action==='armor'){if(player.armor>=50){notify('护甲已满',COLORS.gold);return}player.armor=Math.min(50,player.armor+25);item.count--;notify('+25 护甲',COLORS.blue)}
+      if(def.action==='buffDamage'){player.damageBuff=20;item.count--;supplies.catfood=Math.max(0,supplies.catfood-1);saveProgress();notify('伤害提升 30% · 20秒',def.color)}
+      if(def.action==='buffSpeed'){player.speedBuff=20;item.count--;supplies.fishsnack=Math.max(0,supplies.fishsnack-1);saveProgress();notify('移动速度提升 35% · 20秒',def.color)}
+      if(def.action==='weapon'){player.weapon=item.type;player.weaponSlot=index;selected=index;notify('已装备 '+def.name,def.color)}
+      if(item.count<=0){inventory[index]=null;if(player.weaponSlot===index){player.weapon='pistol';player.weaponSlot=-1}}
+      renderInventory();syncUI();
+    }
+    function switchWeapon(dir=1){
+      const weapons=[{slot:-1,type:'pistol'},...inventory.map((v,i)=>v&&ITEM[v.type].action==='weapon'?{slot:i,type:v.type}:null).filter(Boolean)];
+      let at=weapons.findIndex(w=>w.slot===player.weaponSlot);if(at<0)at=0;const next=weapons[(at+dir+weapons.length)%weapons.length];
+      player.weapon=next.type;player.weaponSlot=next.slot;if(next.slot>=0)selected=next.slot;
+      notify('切换至 '+weaponDef().name,weaponDef().color);renderInventory();syncUI();
+    }
+    function renderInventory(){
+      ui.inventory.innerHTML='';
+      inventory.forEach((item,i)=>{const el=document.createElement('button');el.className='slot '+(!item?'empty':'')+(i===selected?' selected':'')+(player.weaponSlot===i?' equipped':'');el.innerHTML=`<span class="slot-key">${i+1}</span>${item?`<span class="pixel-icon" style="color:${ITEM[item.type].color}">${ITEM[item.type].icon}</span><span class="slot-count">${item.count}</span>`:''}`;el.onclick=()=>{selected=i;renderInventory();showItem(i)};ui.inventory.appendChild(el)});
+      ui.slots.textContent=inventory.filter(Boolean).length;showItem(selected);
+    }
+    function showItem(i){
+      const item=inventory[i];
+      if(!item){ui.card.innerHTML='<div class="rarity">空槽位</div><h3>— 暂无物品 —</h3><p>靠近战场掉落物即可自动放入猫包。</p><button class="use-btn" disabled>使用 / 装备</button>';return}
+      const d=ITEM[item.type],equipped=player.weaponSlot===i;ui.card.innerHTML=`<div class="rarity" style="color:${d.color}">${d.rarity}</div><h3>${d.icon} ${d.name}</h3><p>${d.desc}<br>当前数量 / 弹药：${item.count}</p><button class="use-btn" id="activeUse">${d.action==='weapon'?(equipped?'当前已装备':'装备武器'):'立即使用'}</button>`;$('activeUse').onclick=()=>useItem(i);
+    }
+    function spawnDrop(x,y,type){drops.push({x,y,type,bob:Math.random()*6.28,life:30,pickupCd:0})}
+    function spawnCoins(x,y,amount){coinDrops.push({x,y,amount,bob:Math.random()*6.28,life:35})}
+    function spawnHomeDrop(x,y){const ids=Object.keys(MATERIALS),type=ids[Math.floor(Math.random()*ids.length)];homeDrops.push({x:x-8,y:y+7,type,bob:Math.random()*6.28,life:40})}
+    function spawnEnemy(){
+      const stage=LEVELS[level];if(totalSpawned>=stage.goal)return;let p,tries=0;
+      do{const edge=Math.floor(Math.random()*4);p=edge===0?{x:18,y:25+Math.random()*220}:edge===1?{x:462,y:25+Math.random()*220}:edge===2?{x:25+Math.random()*430,y:18}:{x:25+Math.random()*430,y:252};tries++}while(dist(p,player)<120&&tries<20);
+      let type=stage.types[Math.floor(Math.random()*stage.types.length)];if(level===4&&totalSpawned===stage.goal-1)type='boss';else if(type==='boss')type='raider';const d=ENEMY_TYPES[type];
+      enemies.push({x:p.x,y:p.y,r:d.r,hp:d.hp,max:d.hp,speed:d.speed,cool:.5+Math.random(),strafe:Math.random()<.5?-1:1,phase:Math.random()*6,type,heavy:type==='heavy'||type==='boss',hit:0,...d});totalSpawned++;
+    }
+    function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
+    function blocked(x,y,r){return obstacles.some(o=>x+r>o.x&&x-r<o.x+o.w&&y+r>o.y&&y-r<o.y+o.h)||x-r<7||x+r>W-7||y-r<7||y+r>H-7}
+    function weaponDef(){return player.weapon==='pistol'?{name:'生锈手枪',damage:18,rate:.32,pellets:1,spread:.025,color:'#e8dfc2'}:ITEM[player.weapon]}
+    function firePlayer(){
+      if(player.cool>0||paused||ended)return;const w=weaponDef();player.cool=w.rate;player.flash=.06;shake=Math.max(shake,w.pellets>1?3:1);
+      for(let i=0;i<w.pellets;i++){const a=player.angle+(Math.random()-.5)*w.spread*2;bullets.push({x:player.x+Math.cos(a)*11,y:player.y+Math.sin(a)*11,vx:Math.cos(a)*260,vy:Math.sin(a)*260,dmg:w.damage*(player.damageBuff>0?1.3:1),owner:'p',life:1.25,color:w.color})}
+      for(let i=0;i<3;i++)particles.push({x:player.x+Math.cos(player.angle)*12,y:player.y+Math.sin(player.angle)*12,vx:(Math.random()-.5)*30,vy:(Math.random()-.5)*30,life:.15,color:'#fff3af'});
+      if(player.weaponSlot>=0&&inventory[player.weaponSlot]){inventory[player.weaponSlot].count--;if(inventory[player.weaponSlot].count<=0){inventory[player.weaponSlot]=null;player.weapon='pistol';player.weaponSlot=-1;notify('弹药耗尽，切换手枪',COLORS.gold)}renderInventory()}
+    }
+    function fireEnemy(e){const spread=e.type==='sniper' ? .035 : e.type==='raider' ? .18 : .11,base=Math.atan2(player.y-e.y,player.x-e.x)+(Math.random()-.5)*spread,angles=e.type==='boss'?[base-.13,base,base+.13]:[base];angles.forEach(a=>bullets.push({x:e.x,y:e.y,vx:Math.cos(a)*e.bullet,vy:Math.sin(a)*e.bullet,dmg:e.dmg,owner:'e',life:2.2,color:e.type==='sniper'?'#c69cff':'#ff7a54'}));e.cool=e.rate}
+    function hurtPlayer(dmg){
+      const absorb=Math.min(player.armor,dmg*.65);player.armor-=absorb;player.hp-=dmg-absorb;shake=5;
+      for(let i=0;i<6;i++)particles.push({x:player.x,y:player.y,vx:(Math.random()-.5)*55,vy:(Math.random()-.5)*55,life:.35,color:COLORS.red});
+      if(player.hp<=0){player.hp=0;finish(false)}syncUI();
+    }
+    function killEnemy(e){
+      kills++;ui.kills.textContent=kills;shake=4;
+      for(let i=0;i<14;i++)particles.push({x:e.x,y:e.y,vx:(Math.random()-.5)*85,vy:(Math.random()-.5)*85,life:.3+Math.random()*.4,color:i%3?COLORS.red:'#30231b'});
+      spawnCoins(e.x+8,e.y-5,(e.heavy?12:5)+Math.floor(Math.random()*(e.heavy?9:7)));
+      if(Math.random()<(e.heavy ? .8 : .48))spawnHomeDrop(e.x,e.y);
+      if(Math.random()<(e.heavy ? .95 : .78)){
+        const weaponChance=e.heavy ? .55 : .32;let type;
+        if(Math.random()<weaponChance){const r=Math.random();type=r<.34?'shotgun':r<.72?'smg':'rifle'}else type=Math.random()<.58?'medkit':'armor';
+        spawnDrop(e.x,e.y,type);if(ITEM[type].action==='weapon')notify('发现武器掉落：'+ITEM[type].name,ITEM[type].color);
+      }
+      if(kills>=LEVELS[level].goal){if(level===LEVELS.length-1)finish(true);else advanceLevel()}else setTimeout(()=>{if(!ended&&!advancing)spawnEnemy()},500);
+    }
+    function advanceLevel(){if(advancing)return;advancing=true;bullets=[];notify(`第 ${level+1} 关完成！准备下一关`,COLORS.gold);setTimeout(()=>{level++;kills=0;totalSpawned=0;advancing=false;player.hp=Math.min(100,player.hp+20);player.armor=Math.min(50,player.armor+10);ui.level.textContent=level+1;ui.goal.textContent=LEVELS[level].goal;ui.kills.textContent=0;notify(`第 ${level+1} 关：${LEVELS[level].name}`,COLORS.lime);const count=Math.min(3,2+Math.floor(level/2));for(let i=0;i<count;i++)spawnEnemy()},900)}
+    function autoPickup(){
+      for(let i=drops.length-1;i>=0;i--){const d=drops[i];if(dist(player,d)<20&&d.pickupCd<=0){if(addItem(d.type)){notify('自动拾取 '+ITEM[d.type].name,ITEM[d.type].color);drops.splice(i,1);syncUI()}else d.pickupCd=1}}
+      for(let i=coinDrops.length-1;i>=0;i--){const c=coinDrops[i];if(dist(player,c)<22){coins+=c.amount;coinDrops.splice(i,1);updateCoins();saveProgress();notify(`获得 ${c.amount} 枚金币`,COLORS.gold)}}
+      for(let i=homeDrops.length-1;i>=0;i--){const h=homeDrops[i];if(dist(player,h)<22){materials[h.type]++;homeDrops.splice(i,1);saveProgress();notify(`带回家园：${MATERIALS[h.type].name}`,MATERIALS[h.type].color)}}
+    }
+    function moveEntity(ent,dx,dy,r){const nx=ent.x+dx;if(!blocked(nx,ent.y,r))ent.x=nx;const ny=ent.y+dy;if(!blocked(ent.x,ny,r))ent.y=ny}
+    function update(dt){
+      elapsed+=dt;player.cool=Math.max(0,player.cool-dt);player.flash=Math.max(0,player.flash-dt);player.damageBuff=Math.max(0,player.damageBuff-dt);player.speedBuff=Math.max(0,player.speedBuff-dt);shake=Math.max(0,shake-dt*14);ui.damageBuff.classList.toggle('show',player.damageBuff>0);ui.speedBuff.classList.toggle('show',player.speedBuff>0);
+      let mx=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+touchMove.x,my=(keys.KeyS||keys.ArrowDown?1:0)-(keys.KeyW||keys.ArrowUp?1:0)+touchMove.y;
+      const ml=Math.hypot(mx,my)||1,buffSpeed=player.speed*(player.speedBuff>0?1.35:1); if(Math.abs(mx)+Math.abs(my)>0)moveEntity(player,mx/ml*buffSpeed*dt,my/ml*buffSpeed*dt,player.r);
+      player.angle=Math.atan2(mouse.y-player.y,mouse.x-player.x);
+      if(touchFire){const nearest=enemies.slice().sort((a,b)=>dist(a,player)-dist(b,player))[0];if(nearest)player.angle=Math.atan2(nearest.y-player.y,nearest.x-player.x)}
+      if(mouse.down||keys.Space||touchFire)firePlayer();
+      enemies.forEach(e=>{
+        e.cool-=dt;e.hit=Math.max(0,e.hit-dt);e.phase+=dt;const dx=player.x-e.x,dy=player.y-e.y,d=Math.hypot(dx,dy)||1;let vx=dx/d,vy=dy/d;
+        if(d<e.range-25){vx=-vx*.65;vy=-vy*.65}else if(d<e.range+18){vx*=.12;vy*=.12}vx+=(-dy/d)*e.strafe*.45*Math.sin(e.phase*1.8);vy+=(dx/d)*e.strafe*.45*Math.sin(e.phase*1.8);const vl=Math.hypot(vx,vy)||1;moveEntity(e,vx/vl*e.speed*dt,vy/vl*e.speed*dt,e.r);
+        if(d<(e.type==='sniper'?245:205)&&e.cool<=0)fireEnemy(e);
+      });
+      bullets.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt;b.life-=dt;if(blocked(b.x,b.y,1))b.life=0;
+        if(b.owner==='p'){for(const e of enemies){if(b.life>0&&dist(b,e)<e.r+2){e.hp-=b.dmg;e.hit=.09;b.life=0;for(let i=0;i<4;i++)particles.push({x:b.x,y:b.y,vx:(Math.random()-.5)*50,vy:(Math.random()-.5)*50,life:.22,color:COLORS.red});break}}}
+        else if(b.life>0&&dist(b,player)<player.r+2){b.life=0;hurtPlayer(b.dmg)}
+      });
+      bullets=bullets.filter(b=>b.life>0);const dead=enemies.filter(e=>e.hp<=0);enemies=enemies.filter(e=>e.hp>0);dead.forEach(killEnemy);
+      drops.forEach(d=>{d.bob+=dt*3;d.life-=dt;d.pickupCd=Math.max(0,d.pickupCd-dt)});coinDrops.forEach(c=>{c.bob+=dt*4;c.life-=dt});homeDrops.forEach(h=>{h.bob+=dt*3;h.life-=dt});autoPickup();drops=drops.filter(d=>d.life>0);coinDrops=coinDrops.filter(c=>c.life>0);homeDrops=homeDrops.filter(h=>h.life>0);
+      particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.94;p.vy*=.94;p.life-=dt});particles=particles.filter(p=>p.life>0);
+      const near=[...drops,...coinDrops,...homeDrops].some(d=>dist(d,player)<45);ui.prompt.classList.toggle('show',near);syncUI();
+    }
+    function syncUI(){const hp=Math.max(0,Math.ceil(player.hp)),ar=Math.max(0,Math.ceil(player.armor)),w=weaponDef();ui.hp.textContent=`${hp} / 100`;ui.hpBar.style.width=hp+'%';ui.armor.textContent=`${ar} / 50`;ui.armorBar.style.width=ar*2+'%';ui.weapon.textContent=w.name;ui.damage.textContent=w.damage*(w.pellets||1);ui.ammo.textContent=player.weaponSlot>=0&&inventory[player.weaponSlot]?inventory[player.weaponSlot].count:'∞'}
+    function finish(win){ended=true;paused=true;ui.title.textContent=win?'五关全部完成！':'猫猫需要休息';ui.title.style.color=win?COLORS.gold:COLORS.red;ui.result.textContent=win?`你闯过了全部 5 个关卡，用时 ${Math.floor(elapsed)} 秒。猫包里还剩 ${inventory.filter(Boolean).length} 件物品。`:'别灰心，吃点猫粮、换件武器，再来一次一定可以。';ui.resume.textContent='再冒险一次';ui.overlay.classList.add('show')}
+    function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h))}
+    function drawGround(){
+      const m=MAPS[currentMap];rect(0,0,W,H,m.base);rect(0,116,W,34,m.path);rect(276,0,34,H,m.path);rect(0,116,W,3,'#1e252555');rect(0,147,W,3,'#1e252555');rect(276,0,3,H,'#1e252555');rect(307,0,3,H,'#1e252555');
+      ctx.strokeStyle=m.grid;ctx.lineWidth=1;for(let x=0;x<W;x+=16){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}for(let y=0;y<H;y+=16){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+      for(let i=0;i<9;i++){rect(279+i*3,122+(i%2)*5,2,8,i%2?'#d3a94e':'#1b1c18')}
+      for(let i=0;i<58;i++){const x=(i*83)%W,y=(i*47)%H;rect(x,y,i%3+1,1,i%4?'#20281e':'#666348')}
+      mapProps.forEach(drawMapProp);
+      ctx.fillStyle=currentMap==='snow'?'#73999b88':'#d9a36c66';for(let i=0;i<6;i++){const px=48+i*71,py=92+(i%3)*44;ctx.fillRect(px,py,4,3);ctx.fillRect(px-3,py-3,2,2);ctx.fillRect(px+1,py-4,2,2);ctx.fillRect(px+5,py-2,2,2)}
+      rect(9,9,W-18,3,'#161b15');rect(9,H-12,W-18,3,'#161b15');rect(9,9,3,H-18,'#161b15');rect(W-12,9,3,H-18,'#161b15');
+    }
+    function drawMapProp(p){
+      if(p.t==='puddle'){rect(p.x-8,p.y-3,18,7,'#162b2a');rect(p.x-3,p.y-6,15,4,'#162b2a');rect(p.x+4,p.y-4,12,8,'#1c3431');rect(p.x,p.y-4,7,1,'#4f6860')}
+      if(p.t==='grass'){ctx.fillStyle='#71834a';ctx.fillRect(p.x,p.y,2,7);ctx.fillRect(p.x-4,p.y+3,2,5);ctx.fillRect(p.x+4,p.y+2,2,6);ctx.fillStyle='#a1a95c';ctx.fillRect(p.x+1,p.y-2,1,5)}
+      if(p.t==='rubble'){rect(p.x-8,p.y,5,4,'#76705d');rect(p.x+1,p.y-4,7,6,'#4d5145');rect(p.x+9,p.y+1,3,3,'#9a8767');rect(p.x-2,p.y+5,2,2,'#242a22')}
+      if(p.t==='sign'){rect(p.x,p.y,3,19,'#171a16');rect(p.x-9,p.y-3,20,11,'#6f573f');rect(p.x-7,p.y-1,16,7,'#d1a550');ctx.fillStyle='#261b12';ctx.font='bold 6px Courier New';ctx.fillText('CAT',p.x-5,p.y+5)}
+    }
+    function drawObstacle(o,i){
+      ctx.fillStyle='#121611';ctx.fillRect(o.x+3,o.y+4,o.w,o.h);
+      if(o.kind==='supply'){ctx.fillStyle='#7a5138';ctx.fillRect(o.x,o.y,o.w,o.h);ctx.fillStyle='#c18a52';ctx.fillRect(o.x+3,o.y+3,o.w-6,o.h-6);ctx.fillStyle='#5a3d2d';ctx.fillRect(o.x+o.w/2-2,o.y+2,4,o.h-4);ctx.fillRect(o.x+2,o.y+o.h/2-2,o.w-4,4);ctx.fillStyle='#e5c268';ctx.fillRect(o.x+5,o.y+5,3,3);return}
+      ctx.fillStyle=o.kind==='tower'?'#59625a':i%2?'#59604b':'#66563d';ctx.fillRect(o.x,o.y,o.w,o.h);ctx.fillStyle=o.kind==='tower'?'#849084':i%2?'#737b60':'#806d50';ctx.fillRect(o.x+3,o.y+3,o.w-6,4);ctx.fillStyle='#303629';ctx.fillRect(o.x+5,o.y+9,o.w-10,o.h-14);
+      ctx.fillStyle='#171b15';for(let x=o.x+8;x<o.x+o.w-4;x+=14)ctx.fillRect(x,o.y+9,3,o.h-14);ctx.fillStyle='#9c895e';ctx.fillRect(o.x+3,o.y+o.h-5,o.w-6,2);if(o.kind==='tower'){ctx.fillStyle='#68c4c7';ctx.fillRect(o.x+8,o.y+12,5,3);ctx.fillStyle='#d45a45';ctx.fillRect(o.x+16,o.y+12,3,3)}
+    }
+    function drawDrop(d){
+      const def=ITEM[d.type],bob=Math.sin(d.bob)*2;ctx.globalAlpha=.14;ctx.fillStyle=def.color;ctx.fillRect(d.x-7,d.y-30+bob,14,35);ctx.globalAlpha=1;ctx.fillStyle='#0b0d0b';ctx.fillRect(d.x-8,d.y-7+bob,16,14);ctx.fillStyle=def.color;ctx.fillRect(d.x-6,d.y-5+bob,12,10);ctx.fillStyle='#f5edcf';ctx.font='bold 10px Courier New';ctx.textAlign='center';ctx.fillText(def.icon,d.x,d.y+3+bob);ctx.fillStyle=def.color;ctx.fillRect(d.x-3,d.y-12+bob,6,2)
+    }
+    function drawCoin(c){const bob=Math.sin(c.bob)*2;ctx.globalAlpha=.15;ctx.fillStyle=COLORS.gold;ctx.fillRect(c.x-6,c.y-24+bob,12,27);ctx.globalAlpha=1;ctx.fillStyle='#3c2610';ctx.fillRect(c.x-7,c.y-5+bob,14,11);ctx.fillStyle='#f4bd4d';ctx.fillRect(c.x-5,c.y-7+bob,10,11);ctx.fillStyle='#ffe69a';ctx.fillRect(c.x-2,c.y-5+bob,3,6);ctx.font='bold 6px Courier New';ctx.textAlign='center';ctx.fillStyle='#fff1c2';ctx.fillText(c.amount,c.x,c.y-10+bob)}
+    function drawHomeDrop(h){const m=MATERIALS[h.type],bob=Math.sin(h.bob)*2;ctx.globalAlpha=.15;ctx.fillStyle=m.color;ctx.fillRect(h.x-7,h.y-25+bob,14,28);ctx.globalAlpha=1;ctx.fillStyle='#fff';ctx.fillRect(h.x-8,h.y-7+bob,16,14);ctx.strokeStyle='#222';ctx.strokeRect(h.x-8,h.y-7+bob,16,14);ctx.fillStyle=m.color;ctx.font='bold 11px Courier New';ctx.textAlign='center';ctx.fillText(m.icon,h.x,h.y+4+bob)}
+    function drawActor(a,isPlayer){
+      const ang=isPlayer?player.angle:Math.atan2(player.y-a.y,player.x-a.x);ctx.save();ctx.translate(Math.round(a.x),Math.round(a.y));
+      if(isPlayer){
+        const cat=CATS[selectedCat]||CATS.orange;
+        ctx.fillStyle='#10100d88';ctx.fillRect(-10,5,22,5);ctx.rotate(ang);
+        ctx.fillStyle=cat.dark;ctx.fillRect(-14,-2,7,4);ctx.fillRect(-16,-5,4,4);ctx.fillRect(-17,-8,3,4);
+        ctx.fillStyle=cat.fur;ctx.fillRect(-8,-7,16,14);ctx.fillStyle=cat.dark;ctx.fillRect(-5,-7,3,14);
+        ctx.fillStyle='#536b49';ctx.fillRect(-4,-8,9,16);ctx.fillStyle='#9fba5a';ctx.fillRect(-1,-8,3,16);
+        ctx.fillStyle='#17120f';ctx.fillRect(-6,6,4,4);ctx.fillRect(3,6,4,4);
+        ctx.fillStyle=cat.fur;ctx.fillRect(6,-8,10,16);ctx.fillRect(7,-12,4,5);ctx.fillRect(12,-12,4,5);
+        ctx.fillStyle=cat.light;ctx.fillRect(12,-4,4,7);ctx.fillStyle='#17120f';ctx.fillRect(12,-5,2,2);ctx.fillRect(16,-1,2,2);
+        ctx.fillStyle='#fff1d2';ctx.fillRect(16,-5,4,1);ctx.fillRect(16,3,4,1);
+        ctx.fillStyle='#0a0b0a';ctx.fillRect(5,-3,14,5);ctx.fillStyle=weaponDef().color;ctx.fillRect(8,-2,12,2);
+        if(player.flash>0){ctx.fillStyle='#fff0a6';ctx.fillRect(21,-4,6,7);ctx.fillRect(25,-2,4,3)}
+      }else{
+        if(a.type==='boss')ctx.scale(1.25,1.25);ctx.fillStyle='#0b0d0b';ctx.fillRect(-7,-5,14,14);ctx.fillStyle=a.color;ctx.fillRect(-6,-7,12,13);ctx.fillStyle=a.accent;ctx.fillRect(-5,-7,10,4);
+        ctx.fillStyle=a.type==='sniper'?'#9c7a65':'#c58d62';ctx.fillRect(-4,-10,8,6);ctx.fillStyle='#1a1d18';ctx.fillRect(-5,-11,10,3);ctx.fillStyle=a.type==='scout'?'#7ff1dd':'#ffb06f';ctx.fillRect(Math.cos(ang)>0?1:-3,-8,2,2);
+        if(a.type==='heavy'){ctx.fillStyle='#4b4e48';ctx.fillRect(-8,-5,3,11);ctx.fillRect(5,-5,3,11)}if(a.type==='boss'){ctx.fillStyle='#f0bd50';ctx.fillRect(-5,-15,3,5);ctx.fillRect(2,-15,3,5);ctx.fillRect(-2,-13,4,3)}
+        ctx.rotate(ang);ctx.fillStyle='#0a0b0a';ctx.fillRect(2,-3,a.type==='sniper'?18:12,5);ctx.fillStyle=a.accent;ctx.fillRect(4,-2,a.type==='sniper'?16:10,2);
+      }ctx.restore();
+      if(!isPlayer){ctx.fillStyle='#111';ctx.fillRect(a.x-a.r,a.y-a.r-8,a.r*2,3);ctx.fillStyle=a.accent;ctx.fillRect(a.x-a.r+1,a.y-a.r-7,(a.r*2-2)*(a.hp/a.max),1)}
+    }
+    function draw(){
+      ctx.save();if(shake>0)ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);drawGround();obstacles.forEach(drawObstacle);drops.forEach(drawDrop);coinDrops.forEach(drawCoin);homeDrops.forEach(drawHomeDrop);
+      bullets.forEach(b=>{ctx.fillStyle=b.color;ctx.fillRect(b.x-2,b.y-1,4,2);ctx.globalAlpha=.25;ctx.fillRect(b.x-b.vx*.025,b.y-b.vy*.025,3,2);ctx.globalAlpha=1});
+      enemies.forEach(e=>drawActor(e,false));drawActor(player,true);particles.forEach(p=>{ctx.globalAlpha=Math.min(1,p.life*4);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,2,2)});ctx.globalAlpha=1;
+      ctx.restore();
+      const sx=mouse.x,sy=mouse.y;ctx.strokeStyle='#e8dfc2aa';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(sx-7,sy);ctx.lineTo(sx-2,sy);ctx.moveTo(sx+2,sy);ctx.lineTo(sx+7,sy);ctx.moveTo(sx,sy-7);ctx.lineTo(sx,sy-2);ctx.moveTo(sx,sy+2);ctx.lineTo(sx,sy+7);ctx.stroke();
+      ctx.fillStyle='#fff';ctx.fillRect(16,16,178,16);ctx.strokeStyle='#222';ctx.strokeRect(16,16,178,16);ctx.fillStyle='#222';ctx.font='bold 7px Courier New';ctx.textAlign='left';ctx.fillText(`${MAPS[currentMap].name}  |  第${level+1}关  |  敌人 ${enemies.length}  |  战利品 ${drops.length+coinDrops.length+homeDrops.length}`,21,27);
+    }
+    function canvasPoint(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H}}
+    canvas.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')Object.assign(mouse,canvasPoint(e))});
+    canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'){Object.assign(mouse,canvasPoint(e));mouse.down=true}});
+    window.addEventListener('pointerup',e=>{if(e.pointerType==='mouse')mouse.down=false});
+    window.addEventListener('keydown',e=>{
+      if(e.code==='KeyH'){homeOpen?closeHome():openHome();return}if(e.code==='KeyM'){ui.mapOverlay.classList.contains('show')?closeMaps():openMaps();return}if(e.code==='Escape'){homeOpen?closeHome():ui.mapOverlay.classList.contains('show')?closeMaps():togglePause();return}if(homeOpen||ui.mapOverlay.classList.contains('show'))return;
+      keys[e.code]=true;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();
+      if(e.code==='KeyQ')switchWeapon(1);if(e.code==='KeyB'){ui.panel.classList.toggle('open');notify(ui.panel.classList.contains('open')?'猫包已打开':'猫包已收起')}
+      if(/^Digit[1-8]$/.test(e.code)){selected=Number(e.code.slice(5))-1;renderInventory();useItem(selected)}
+    });
+    window.addEventListener('keyup',e=>keys[e.code]=false);
+    function togglePause(){if(ended)return;paused=!paused;ui.title.textContent='战斗暂停';ui.title.style.color=COLORS.gold;ui.result.textContent='喘口气。背包和战场状态已保留。';ui.resume.textContent='继续战斗';ui.overlay.classList.toggle('show',paused)}
+    $('pauseBtn').onclick=togglePause;$('mapBtn').onclick=openMaps;$('mapClose').onclick=closeMaps;$('homeBtn').onclick=openHome;$('homeClose').onclick=closeHome;$('bagBtn').onclick=()=>{ui.panel.classList.toggle('open');if(innerWidth>800){selected=(selected+1)%8;renderInventory();notify('已切换猫包槽位')}};$('switchBtn').onclick=()=>switchWeapon(1);
+    document.querySelectorAll('.home-tab').forEach(b=>b.onclick=()=>{homeTab=b.dataset.tab;renderHome()});
+    canvas.addEventListener('wheel',e=>{e.preventDefault();switchWeapon(e.deltaY>0?1:-1)},{passive:false});
+    ui.resume.onclick=()=>{if(ended)reset();else{paused=false;ui.overlay.classList.remove('show')}};
+    ui.overlay.addEventListener('click',e=>{if(e.target===ui.overlay&&!ended)togglePause()});
+    const stick=$('stick'),knob=$('knob');let stickId=null;
+    function stickMove(e){const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,l=Math.hypot(dx,dy),max=28,n=Math.min(max,l),nx=l?dx/l:0,ny=l?dy/l:0;touchMove={x:nx*(n/max),y:ny*(n/max)};knob.style.transform=`translate(${nx*n}px,${ny*n}px)`}
+    stick.addEventListener('pointerdown',e=>{stickId=e.pointerId;stick.setPointerCapture(e.pointerId);stickMove(e)});stick.addEventListener('pointermove',e=>{if(e.pointerId===stickId)stickMove(e)});function stickEnd(){stickId=null;touchMove={x:0,y:0};knob.style.transform=''}stick.addEventListener('pointerup',stickEnd);stick.addEventListener('pointercancel',stickEnd);
+    const shootTouch=$('shootTouch');shootTouch.addEventListener('pointerdown',e=>{e.preventDefault();touchFire=true;shootTouch.setPointerCapture(e.pointerId)});shootTouch.addEventListener('pointerup',()=>touchFire=false);shootTouch.addEventListener('pointercancel',()=>touchFire=false);
+    document.addEventListener('visibilitychange',()=>{if(document.hidden&&!ended&&!paused)togglePause()});
+    function loop(t){const dt=Math.min(.033,(t-last)/1000||0);last=t;if(!paused&&!ended)update(dt);draw();requestAnimationFrame(loop)}
+    loadProgress();reset();requestAnimationFrame(loop);
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

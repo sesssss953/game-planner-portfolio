@@ -1,0 +1,174 @@
+/* Goose Cup — responsive portrait game */
+:root{--ink:#08274f;--blue:#0877d7;--deep:#06376f;--gold:#ffc428;--orange:#ff9518;--red:#e93b36;--green:#72c635;--paper:#fffefa}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#06162b;color:var(--ink);font-family:"YouYuan","Microsoft YaHei",sans-serif}
+button{font:inherit;color:inherit;border:0;cursor:pointer;user-select:none}
+button:focus-visible{outline:4px solid #fff;outline-offset:3px}
+#app{width:100%;height:100%;display:grid;place-items:center;background:radial-gradient(circle at 50% 18%,#144b7d,#07182c 70%)}
+.phone{position:relative;isolation:isolate;height:100dvh;max-height:100%;aspect-ratio:2/3;width:min(100vw,66.6667vh);overflow:hidden;background:#f6f7f7;box-shadow:0 0 0 1px #ffffff22,0 26px 80px #000b;touch-action:manipulation}
+.screen{position:absolute;inset:0;overflow:hidden;animation:screenIn .34s cubic-bezier(.2,.8,.2,1)}
+@keyframes screenIn{from{opacity:0;transform:scale(1.025)}to{opacity:1;transform:none}}
+.reference-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none}
+.hotspot{position:absolute;background:transparent;border-radius:28px}
+.hotspot:active{transform:scale(.96)}
+.tap-pulse{animation:tapPulse 1.8s ease-in-out infinite}
+@keyframes tapPulse{50%{filter:drop-shadow(0 0 14px #fff) drop-shadow(0 0 18px #ffcf2e)}}
+.back{position:absolute;z-index:20;left:3%;top:2%;width:13%;aspect-ratio:1.55;background:#071f3f;color:#fff;border:3px solid #fff;border-radius:45% 55% 45% 55%;font-size:clamp(22px,5.5vw,42px);font-weight:1000;box-shadow:0 5px 0 #031126}
+.back:active{transform:translateY(4px);box-shadow:0 1px 0 #031126}
+.toast{position:absolute;z-index:90;left:50%;bottom:9%;transform:translateX(-50%);min-width:56%;max-width:88%;padding:12px 18px;border:3px solid #fff;border-radius:999px;background:#071f3fe8;color:#fff;text-align:center;font-weight:900;font-size:clamp(13px,3vw,20px);box-shadow:0 7px 20px #0007;animation:toast .25s ease-out}
+@keyframes toast{from{opacity:0;transform:translate(-50%,10px)}}
+
+/* cover + image-led menu screens */
+.cover-screen{background:#0878d8}
+.cover-start{left:23%;bottom:7.5%;width:54%;height:11%}
+.home-team{right:3%;bottom:24%;width:25%;height:15%}
+.home-gacha{left:3%;bottom:24%;width:25%;height:15%}
+.home-match{left:22%;bottom:8.5%;width:58%;height:12%}
+.shine{position:absolute;inset:-20%;background:linear-gradient(110deg,transparent 42%,#fff8 48%,transparent 55%);transform:translateX(-80%);animation:shine 2.8s ease-in-out infinite;pointer-events:none;mix-blend-mode:screen}
+@keyframes shine{55%,100%{transform:translateX(80%)}}
+
+/* team builder */
+.team-screen{background:#fff}
+.team-cards{position:absolute;left:2%;right:2%;top:30%;height:49%;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:2.5% 1.8%;z-index:10}
+.player-hit{position:relative;background:transparent;border-radius:12px;overflow:visible}
+.player-hit::after{content:"";position:absolute;inset:0;border:5px solid transparent;border-radius:12px;transition:.2s}
+.player-hit.selected::after{border-color:#fff;box-shadow:0 0 0 5px #17a7ef,0 0 24px #35c3ff}
+.select-check{position:absolute;right:-3px;top:-7px;width:28%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#0673cc;color:white;border:3px solid #fff;box-shadow:0 3px 0 #043972;font-weight:1000;opacity:0;transform:scale(.5);transition:.18s}
+.selected .select-check{opacity:1;transform:scale(1)}
+.lineup{position:absolute;z-index:12;left:22%;right:22%;top:6.5%;height:23%;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(2,1fr);gap:7px}
+.lineup-chip{position:relative;border:3px dashed #b7c0ca;border-radius:12px;background:#f2f5f899;display:grid;place-items:center;color:#aeb8c2;font-weight:1000;font-size:clamp(10px,2.3vw,16px)}
+.lineup-chip:nth-child(1){grid-column:1/3}.lineup-chip:nth-child(2){grid-column:3/5}.lineup-chip:nth-child(3){grid-column:5/7}.lineup-chip:nth-child(4){grid-column:2/4}.lineup-chip:nth-child(5){grid-column:4/6}
+.lineup-chip.filled{border-style:solid;border-color:#fff;background:#fff var(--card) center 23%/cover no-repeat;color:#fff;box-shadow:0 4px 0 #17375b,0 8px 15px #0b274744}
+.team-gacha{left:2%;bottom:3%;width:20%;height:13%;z-index:20}
+.team-confirm{right:2%;bottom:3%;width:27%;height:13%;z-index:20}
+
+/* gacha */
+.gacha-screen{background:#ffc51f}
+.pack-hit{z-index:10;left:25%;top:34%;width:54%;height:43%;border-radius:14%}
+.pack-count{position:absolute;z-index:11;left:10%;top:31.5%;min-width:17%;padding:4px 10px;color:white;font-weight:1000;font-size:clamp(20px,5.2vw,38px);text-align:center;text-shadow:0 3px 0 #081c39;pointer-events:none}
+.gacha-flare{position:absolute;z-index:8;width:18%;aspect-ratio:1;left:43%;top:50%;border-radius:50%;background:#fff;filter:blur(15px);opacity:.2;animation:flare 1.2s ease-in-out infinite}
+@keyframes flare{50%{opacity:.8;transform:scale(2.8)}}
+.gacha-modal{position:absolute;z-index:50;inset:0;display:grid;place-items:center;background:#071a3dda;backdrop-filter:blur(7px);animation:revealBg .35s ease-out}
+@keyframes revealBg{from{opacity:0}}
+.reveal-card{position:relative;width:68%;height:65%;border:7px solid #fff;border-radius:26px;background:linear-gradient(145deg,#f7b820,#ffef7a 35%,#ff9b11);box-shadow:0 0 0 8px #102a52,0 25px 80px #000b;overflow:hidden;text-align:center;animation:cardPop .6s cubic-bezier(.16,1.35,.4,1)}
+@keyframes cardPop{0%{transform:rotateY(90deg) scale(.6)}100%{transform:none}}
+.reveal-card::before{content:"";position:absolute;inset:-40%;background:conic-gradient(transparent,#fff9,transparent 25%);animation:spin 2.5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.reveal-rank{position:absolute;z-index:2;left:7%;top:4%;font:bold clamp(48px,15vw,96px) Impact;color:#fff;text-shadow:0 5px 0 #c27700,0 0 18px #fff}
+.reveal-goose{position:absolute;z-index:1;left:8%;right:8%;top:19%;height:44%;border-radius:50%;background:#fff url('assets/goose-blue-portrait.png') center bottom/contain no-repeat;border:6px solid #fff;box-shadow:0 8px 0 #d57b00}
+.reveal-name{position:absolute;z-index:2;left:0;right:0;bottom:22%;font-size:clamp(28px,7vw,50px);font-weight:1000;color:#0a284f;text-shadow:0 3px #fff}
+.reveal-stats{position:absolute;z-index:2;left:9%;right:9%;bottom:7%;display:flex;justify-content:space-around;background:#fffde7;border-radius:999px;padding:10px;font-weight:900;font-size:clamp(12px,3vw,19px)}
+.modal-close{position:absolute;z-index:70;left:27%;right:27%;bottom:4%;height:8%;border-radius:999px;background:linear-gradient(#ffe85d,#ff9f0d);border:4px solid #fff;box-shadow:0 6px 0 #7c3e00;color:#08264e;font-size:clamp(18px,4.5vw,30px);font-weight:1000}
+
+/* live PVE match */
+.match-screen{background:#8bd7ff}
+.stadium{position:absolute;inset:0;background:linear-gradient(#84d9ff 0 13%,#2d8c38 13% 77%,#e9f4ff 77%)}
+.stands{position:absolute;left:-5%;right:-5%;top:7%;height:18%;background:repeating-linear-gradient(105deg,#4f96c2 0 9px,#e2f3fa 10px 15px,#f2ad35 16px 23px);border-bottom:12px solid #0c5ca1;clip-path:polygon(0 0,100% 0,95% 100%,5% 100%);opacity:.95}
+.pitch{position:absolute;z-index:2;left:2%;right:2%;top:16%;height:61%;overflow:hidden;border:5px solid #eaffdb;border-radius:4%;background-color:#6fc53b;background-image:linear-gradient(90deg,#ffffff09 50%,transparent 50%),linear-gradient(#ffffff08 50%,transparent 50%),radial-gradient(circle at 20% 20%,#d4ff7038 0 2px,transparent 3px);background-size:25% 100%,100% 16.666%,22px 22px;box-shadow:inset 0 0 70px #1f7b27,0 10px 20px #0004}
+.pitch::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:4px;background:#eaffdb;transform:translateX(-50%)}
+.pitch::after{content:"";position:absolute;left:50%;top:50%;width:25%;aspect-ratio:1;border:4px solid #eaffdb;border-radius:50%;transform:translate(-50%,-50%)}
+.goal{position:absolute;z-index:3;left:33%;width:34%;height:5%;border:6px double #fff;background:repeating-linear-gradient(90deg,#c7e7f9 0 5px,transparent 5px 14px);box-shadow:0 4px 10px #0004}.goal.away{top:13.5%}.goal.home{top:75%}
+.scorebar{position:absolute;z-index:30;left:14%;right:14%;top:2%;height:8%;display:grid;grid-template-columns:1fr 32% 1fr;align-items:center;border:4px solid #fff;border-radius:15px;background:#08264f;color:#fff;box-shadow:0 7px 0 #041a36,0 10px 20px #0005;overflow:hidden;font-weight:1000}
+.side{height:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-size:clamp(13px,3.2vw,22px)}.side.blue{background:linear-gradient(100deg,#0874d4,#0c9af0)}.side.red{background:linear-gradient(100deg,#e93b36,#c91f25)}
+.score-mid{text-align:center;white-space:nowrap;font-family:Impact,"Arial Black",sans-serif;font-size:clamp(17px,4.7vw,30px);letter-spacing:1px}.timer{display:block;font:800 clamp(9px,2vw,13px) "Microsoft YaHei";letter-spacing:0;color:#d7e8ff}
+.match-control{position:absolute;z-index:31;top:2%;width:10%;aspect-ratio:1;border-radius:18px;background:#0c3e78;color:#fff;border:3px solid #fff;box-shadow:0 5px 0 #061e3c;font-weight:1000;font-size:clamp(11px,2.5vw,18px)}.pause-btn{left:2%}.speed-btn{right:2%}.match-control.on{background:#ff9f12;color:#0a2a53}
+.goose{position:absolute;z-index:9;width:11%;aspect-ratio:1;border-radius:50%;border:4px solid #fff;background-image:url('assets/team.png');background-repeat:no-repeat;box-shadow:0 6px 7px #14360977;transition:left .85s linear,top .85s linear,filter .25s,transform .25s;overflow:visible}
+.goose.blue{box-shadow:0 0 0 4px #0a78d4,0 7px 8px #14360977}.goose.red{box-shadow:0 0 0 4px #e13834,0 7px 8px #14360977}
+.goose::after{content:attr(data-n);position:absolute;right:-6px;bottom:-6px;width:30%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#fff;color:#0b2d57;border:2px solid currentColor;font:900 clamp(8px,1.7vw,12px) Impact}
+.goose.boost{filter:drop-shadow(0 0 10px #fff300) saturate(1.35);transform:scale(1.12)}.goose.frozen{filter:grayscale(.6) hue-rotate(150deg) drop-shadow(0 0 8px #baf7ff)}
+.ball{position:absolute;z-index:15;width:5.5%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 25%,#111 27% 39%,#eee 41% 64%,#111 66% 78%,#fff 80%);border:2px solid #fff;box-shadow:0 6px 8px #1239;transition:left .72s cubic-bezier(.25,.8,.4,1),top .72s cubic-bezier(.25,.8,.4,1),transform .72s linear}
+.commentary{position:absolute;z-index:25;left:18%;right:18%;top:11%;padding:5px 12px;border-radius:999px;background:#071f3fcf;color:#fff;text-align:center;font-size:clamp(10px,2.3vw,15px);font-weight:900;opacity:0;transform:translateY(-5px);transition:.2s}.commentary.show{opacity:1;transform:none}
+.point-panel{position:absolute;z-index:25;left:34%;right:34%;top:78%;padding:5px 4px;border-radius:999px;background:#08264f;color:#fff;text-align:center;border:3px solid #fff;font-size:clamp(12px,3vw,20px);font-weight:1000;box-shadow:0 5px 0 #04162e}.point-panel b{color:#ffd32a}
+.props{position:absolute;z-index:20;left:4%;right:4%;top:82.5%;height:9%;display:flex;gap:3%}
+.prop{flex:1;position:relative;border:4px solid #fff;border-radius:20px;background:linear-gradient(135deg,#eefaff,#91dcff);box-shadow:0 6px 0 #166594;color:#09336a;padding:4px;font-weight:1000;font-size:clamp(12px,3vw,20px)}.prop.boost-card{background:linear-gradient(135deg,#fffbdc,#ffc53a);box-shadow:0 6px 0 #a76500}.prop:disabled{filter:grayscale(1);opacity:.48}.prop .qty{position:absolute;right:5px;top:5px;min-width:22px;border-radius:50%;background:#072c5a;color:#fff;border:2px solid #fff;font-size:12px}
+.draw-prop{position:absolute;z-index:21;left:25%;right:25%;bottom:1.5%;height:6.5%;border:4px solid #fff;border-radius:999px;background:linear-gradient(#ffe75f,#ff9e0c);box-shadow:0 6px 0 #8c4700;color:#08284f;font-size:clamp(15px,4vw,26px);font-weight:1000}.draw-prop:disabled{filter:grayscale(1)}
+.cost{display:block;font-size:.45em}
+.goal-flash{position:absolute;z-index:50;inset:32% 0 auto;text-align:center;color:#ffe22b;font:1000 clamp(60px,18vw,120px) Impact;text-shadow:0 8px 0 #f04421,0 12px 20px #000;animation:goalFlash 1s ease-out forwards;pointer-events:none}
+@keyframes goalFlash{0%{opacity:0;transform:scale(.2) rotate(-8deg)}35%{opacity:1;transform:scale(1.15) rotate(3deg)}100%{opacity:0;transform:scale(1.35)}}
+
+/* end result */
+.result{position:absolute;z-index:100;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;background:linear-gradient(#061a3cb8,#061a3cee),url('assets/result-ref.png') center/cover;backdrop-filter:blur(4px);animation:revealBg .35s}
+.result.win{background:linear-gradient(#0a56ac44,#073b78d9),url('assets/result-ref.png') left center/auto 100%}
+.result h1{margin:0 0 1%;font:1000 clamp(64px,18vw,120px) Impact;color:#ffcf27;-webkit-text-stroke:3px #fff;text-shadow:0 8px 0 #b84900,0 14px 30px #000}.result:not(.win) h1{color:#dce9f7;text-shadow:0 8px 0 #38536e,0 14px 30px #000}
+.final-score{font:900 clamp(46px,12vw,82px) Impact;background:#071f3fe8;border:5px solid #fff;border-radius:24px;padding:8px 32px;margin:4%}.reward{font-weight:900;font-size:clamp(17px,4vw,26px);padding:12px 20px;background:#ffffffdd;color:#0b2b56;border-radius:16px}.result-actions{display:flex;gap:15px;width:76%;margin-top:7%}.result-actions button{flex:1;padding:14px 8px;border:4px solid #fff;border-radius:999px;background:linear-gradient(#ffe663,#ff9a08);box-shadow:0 6px 0 #803d00;font-weight:1000;font-size:clamp(14px,3.6vw,24px)}
+@media (max-aspect-ratio:2/3){.phone{height:auto;width:100vw}}
+@media (min-aspect-ratio:2/3){.phone{height:100dvh;width:auto}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+/* Exact-art mode: supplied artwork remains untouched; only transparent hotspots sit above it. */
+.lineup{display:grid!important}
+.select-check,.gacha-flare,.pack-count{display:grid}
+.player-hit::after{display:block}
+.player-hit.selected::after{display:block}
+.unlock-count{position:absolute;z-index:12;right:5%;top:8%;padding:7px 13px;border:3px solid #fff;border-radius:999px;background:#08264fe8;color:#fff;font-weight:1000;font-size:clamp(12px,3vw,20px);box-shadow:0 4px 0 #04162e;pointer-events:none}
+.pack-opening{animation:artTap .48s ease-in-out}
+@keyframes artTap{50%{transform:scale(.985);filter:brightness(1.08)}}
+.art-match .reference-bg{object-fit:cover}
+.art-match .art-hot{z-index:20}
+.art-pause{left:1.5%;top:1.3%;width:9%;height:6.7%}
+.art-speed{left:1.5%;top:7.8%;width:10%;height:8.2%}
+.art-freeze{left:11%;bottom:14.5%;width:40%;height:15%}
+.art-boost{right:11%;bottom:14.5%;width:40%;height:15%}
+.art-draw{left:31%;bottom:1%;width:38%;height:10%}
+.result-art-screen{background:#132a44}
+.result-art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;user-select:none}
+.result-primary{left:22%;bottom:9%;width:56%;height:10%;z-index:20}
+.result-home{left:32%;bottom:2.5%;width:36%;height:5%;z-index:20}
+
+/* Fix: empty five-slot formation overlays the original artwork; card taps map to the eight printed cards. */
+.lineup{left:23.5%;right:23.5%;top:6.3%;height:22.3%;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(2,1fr);gap:5px;pointer-events:auto}
+.lineup-chip{font-size:clamp(8px,1.9vw,13px);padding:2px;text-align:center;line-height:1.05;background:#f8fbffed;border:2px dashed #8fa3b8;color:#60758c;cursor:pointer;overflow:hidden}
+.lineup-chip.filled{background:#fff var(--card) center 23%/cover no-repeat;border:2px solid white;color:white;box-shadow:0 3px 0 #183652,0 6px 10px #0b274744}
+.player-hit{z-index:10}
+.player-hit.selected::after{border-color:#fff;box-shadow:inset 0 0 0 4px #17a7ef,0 0 12px #35c3ff}
+.pack-count{display:block;left:7%;top:30%;min-width:0;padding:6px 12px;border:3px solid #fff;border-radius:999px;background:#09274fe8;box-shadow:0 4px 0 #04162e;font-size:clamp(13px,3.2vw,22px)}
+.gacha-modal{padding-bottom:13%}
+.reveal-card{height:61%;border:6px solid #fff;background:linear-gradient(145deg,#fff7bd 0%,#ffcf36 48%,#ff8d15 100%);box-shadow:0 0 0 5px #102a52,0 18px 60px #000c}
+.reveal-card::after{content:"✦";position:absolute;right:7%;top:8%;font-size:clamp(35px,9vw,65px);color:#fff;text-shadow:0 3px 0 #d07800;animation:twinkle .7s ease-in-out infinite alternate}
+@keyframes twinkle{to{transform:scale(1.25) rotate(18deg);opacity:.7}}
+.reveal-tag{position:absolute;z-index:3;right:5%;top:5%;padding:5px 10px;border-radius:999px;background:#08264f;color:#fff;font-weight:1000;font-size:clamp(10px,2.4vw,16px)}
+.modal-close{bottom:4.5%;height:8%;left:19%;right:19%;border:4px solid #fff;border-radius:22px;background:linear-gradient(#fff26d,#ffad12 58%,#f47c06);box-shadow:0 7px 0 #733600,0 12px 24px #0007;color:#08264f;font-size:clamp(17px,4.2vw,28px);text-shadow:0 1px #fff;animation:tapPulse 1.8s ease-in-out infinite}
+/* Original match-reference UI is kept intact; only live text, controls, ball and 3D goose actors sit above it. */
+.art-match .reference-bg{object-fit:fill}
+.match-ui-slice{position:absolute;inset:0;z-index:26;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none;image-rendering:auto}
+.match-ui-top{clip-path:inset(0 0 84% 0)}
+.match-ui-bottom{clip-path:inset(64% 0 0 0)}
+.keeper{position:absolute;z-index:28;left:50%;height:auto;transform:translateX(-50%);pointer-events:none;user-select:none;filter:drop-shadow(0 3px 2px #14371f66);animation:keeperIdle 1.15s ease-in-out infinite alternate}
+.keeper-away{top:9.7%;width:10.5%}
+.keeper-home{top:51.2%;width:12.5%;animation-delay:-.55s}
+@keyframes keeperIdle{from{translate:0 0}to{translate:0 -2px}}
+.live-score{position:absolute;z-index:32;left:35.5%;right:35.5%;top:2.1%;height:6.1%;border-radius:8px;background:#08264f;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Impact,"Arial Black",sans-serif;font-weight:1000;text-shadow:0 2px 3px #061a36;pointer-events:none}
+#score{font-size:clamp(17px,4.5vw,30px);line-height:1}
+#timer{font-size:clamp(9px,2.2vw,15px);line-height:1.1}
+.art-match .commentary{top:12%;left:22%;right:22%;z-index:40}
+.art-pause{left:1.5%;top:1.3%;width:10%;height:6.7%;z-index:35}
+.art-speed{left:1.5%;top:7.8%;width:10%;height:8.2%;z-index:35}
+.art-freeze{left:11%;bottom:14.5%;width:40%;height:15%;z-index:35}
+.art-boost{right:11%;bottom:14.5%;width:40%;height:15%;z-index:35}
+.art-draw{left:31%;bottom:1%;width:38%;height:10%;z-index:35}
+.live-points{position:absolute;z-index:34;left:42%;top:63.8%;width:16%;text-align:center;color:#ffd532;font-weight:1000;font-size:clamp(16px,4.3vw,29px);text-shadow:0 3px 0 #10294e;pointer-events:none}
+/* Transparent six-frame character artwork derived from the original illustrated geese. */
+.goose3d{position:absolute;z-index:22;width:14%;aspect-ratio:1;transform:translate(-50%,-64%);transition:left .72s cubic-bezier(.2,.8,.25,1),top .72s cubic-bezier(.2,.8,.25,1),filter .2s,scale .2s;pointer-events:none;isolation:isolate}
+.goose-shadow{position:absolute;z-index:0;left:22%;right:15%;bottom:7%;height:13%;border-radius:50%;background:radial-gradient(ellipse,#102c2290 0 42%,#102c2200 74%);filter:blur(1px);animation:shadowRun .54s steps(6) infinite}
+.goose-sprite{position:absolute;z-index:1;inset:0;background-repeat:no-repeat;background-position:0 0;background-size:600% 100%;animation:gooseSprite .54s steps(6) infinite;transform-origin:50% 76%;will-change:background-position,transform}
+.goose3d.blue .goose-sprite{background-image:url('assets/goose-blue-run.png')}
+.goose3d.red .goose-sprite{background-image:url('assets/goose-red-run.png')}
+.goose3d.blue.face-left .goose-sprite,.goose3d.red.face-right .goose-sprite{transform:scaleX(-1)}
+@keyframes gooseSprite{to{background-position:120% 0}}
+@keyframes shadowRun{50%{transform:scale(.84);opacity:.72}}
+.goose3d.boost{filter:drop-shadow(0 0 4px #fff200) drop-shadow(0 0 8px #ffb700);scale:1.12}
+.goose3d.boost .goose-sprite{animation-duration:.32s}
+.goose3d.frozen{filter:grayscale(.25) saturate(.8) drop-shadow(0 0 6px #79eeff)}
+.goose3d.frozen .goose-sprite,.goose3d.frozen .goose-shadow{animation-play-state:paused}
+.goose3d.celebrate{animation:gooseCelebrate .2s ease-in-out 6 alternate}
+.goose3d.celebrate .goose-sprite{animation-duration:.3s}
+@keyframes gooseCelebrate{from{translate:0 0;rotate:-4deg}to{translate:0 -12px;rotate:5deg}}
+.art-match .ball{z-index:29;width:4.5%;border:1px solid #fff}
+.goal-flash{inset:32% 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:clamp(50px,15vw,100px)}
+.goal-flash span{font:1000 clamp(18px,5vw,34px) "Microsoft YaHei",sans-serif}
+.cheer-fx{color:#ffe22b;text-shadow:0 6px 0 #ed4d20,0 10px 18px #000}
+.concede-fx{color:#f2f2f2;text-shadow:0 5px 0 #101010,0 10px 18px #000;animation:concedeHit 1.2s ease-out forwards}
+.black-streaks{color:#05070b!important;font-size:clamp(20px,6vw,42px)!important;line-height:.65;letter-spacing:-3px;transform:skewX(-24deg);text-shadow:0 2px 0 #666!important}
+@keyframes concedeHit{0%{opacity:0;transform:translateX(80px) skewX(-25deg)}25%{opacity:1;transform:translateX(-5px) skewX(-25deg)}100%{opacity:0;transform:translateX(-30px) skewX(-25deg)}}
+.art-match .draw-prop,.art-match .freeze-card,.art-match .boost-card{background:transparent!important;border:0!important;box-shadow:none!important;color:transparent!important;padding:0!important}
+.art-match .draw-prop:disabled,.art-match .freeze-card:disabled,.art-match .boost-card:disabled{filter:none!important;opacity:1!important}

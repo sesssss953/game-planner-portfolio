@@ -48,9 +48,21 @@ body {
   line-height: 2;
 }
 header {
-  padding: 60px 20px 35px;
+  position: relative;
+  overflow: hidden;
+  padding: 70px 20px 45px;
   text-align: center;
-  background: #252a30;
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(133, 157, 190, 0.25),
+      transparent 48%
+    ),
+    linear-gradient(
+      180deg,
+      #172334 0%,
+      #252a30 100%
+    );
   color: #fff;
 }
 header p { color: #d2c8b7; }
@@ -99,6 +111,111 @@ h2 { margin-top: 0; }
   letter-spacing: 0.5px;
   color: #302d29;
 }
+ /* 月夜背景装饰 */
+header::before {
+  content: "";
+  position: absolute;
+  top: 32px;
+  left: calc(50% + 105px);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #e8dfc9;
+  opacity: 0.85;
+  box-shadow: 0 0 35px rgba(210, 220, 235, 0.22);
+  pointer-events: none;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  top: 52px;
+  left: calc(50% + 87px);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #1b293a;
+  pointer-events: none;
+}
+
+/* 确保标题文字位于装饰上方 */
+header p,
+header h1,
+header .title-divider {
+  position: relative;
+  z-index: 1;
+}
+
+/* 章节正文卡片 */
+article {
+  margin-top: 32px;
+  padding: 32px 36px;
+  background: #fff;
+  border: 1px solid #e9e0d5;
+  border-radius: 10px;
+  box-shadow: 0 5px 18px rgba(48, 45, 41, 0.035);
+  scroll-margin-top: 24px;
+}
+
+/* 章节标题 */
+article h2 {
+  position: relative;
+  margin: 0 0 28px;
+  padding: 0 0 16px;
+  color: #29394a;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 2px;
+  border-bottom: 1px solid #e8dfd2;
+}
+
+/* 章节标题下的金色短线 */
+article h2::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 48px;
+  height: 2px;
+  background: #b99b72;
+}
+
+/* 正文阅读样式 */
+.novel-text {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: 0.5px;
+  color: #302d29;
+}
+
+/* 手机屏幕适配 */
+@media (max-width: 600px) {
+  header {
+    padding: 60px 18px 38px;
+  }
+
+  header h1 {
+    font-size: 32px;
+    letter-spacing: 5px;
+  }
+
+  article {
+    padding: 24px 20px;
+  }
+
+  article h2 {
+    font-size: 21px;
+  }
+
+  .novel-text {
+    font-size: 15px;
+    line-height: 1.95;
+  }
+} 
 </style>
 </head>
 <body>

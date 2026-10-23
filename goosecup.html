@@ -25,7 +25,185 @@
 
   <p class="note">以上为目标玩法设计，不代表相关功能均已在当前 Demo 中实现。球员自动行为、比赛判定、道具效果及赛后养成仍需逐步实现与验证。</p>
 </section>
-<section class="section"><div class="head"><div><div class="kicker">03 / PLAYER SYSTEM</div><h2>球员属性与养成</h2></div><p>方案当前将球员差异归纳为三项主属性；实际权重与平衡性需要通过测试验证。</p></div><div class="table-wrap"><table><thead><tr><th>属性</th><th>预期作用</th><th>当前设计风险</th><th>测试关注点</th></tr></thead><tbody><tr><td><b>速度</b></td><td>影响球员移动速度。</td><td>速度差异可能对比赛结果影响过大。</td><td>观察高速度阵容的胜率、推进效率与单局时长。</td></tr><tr><td><b>力量</b></td><td>影响争抢球权表现。</td><td>力量球员可能对其他球员形成过强压制。</td><td>比较不同力量水平下的球权争夺成功率。</td></tr><tr><td><b>技巧</b></td><td>影响传球与射门表现。</td><td>技巧的收益可能不如速度、力量直观。</td><td>观察传球成功率、射门质量及属性提升后的收益。</td></tr></tbody></table></div><div class="grid" style="margin-top:14px"><article class="card"><h3>抽卡规则（方案设定）</h3><ul><li>卡池共 20 名球员，初始获得 5 名随机等级球员。</li><li>每包必得 1 名球员与 1 件道具；存在额外获得球员的概率。</li><li>重复球员转化为碎片，10 个碎片可升至 2 星，最高 4 星。</li></ul></article><article class="card"><h3>每日资源与保留机制</h3><ul><li>每日登录提供 3 次免费抽卡机会。</li><li>看广告、分享好友可增加抽卡机会，各每日限定 3 次。</li><li>球员每日 0 点刷新；玩家可锁定 2 名球员保留，广告与分享奖励可额外增加保留名额。</li></ul><p class="small">上述为原始方案中的规则设想，实际产品化前需继续评估体验节奏、广告频率与数值经济。</p></article></div></section>
+  
+<section class="section">
+  <div class="head">
+    <div>
+      <div class="kicker">03 / MATCH RULES</div>
+      <h2>比赛规则与原型实现状态</h2>
+    </div>
+    <p>当前原型主要展示游戏界面与基础动画，完整比赛逻辑尚未完善。本节区分当前实现情况与后续设计计划。</p>
+  </div>
+
+  <div class="grid">
+    <article class="card">
+      <h3>当前原型已实现</h3>
+      <ul>
+        <li>游戏主界面与绿茵场景展示。</li>
+        <li>鹅球员的基础视觉表现与动画演示。</li>
+        <li>部分界面交互与视觉布局展示。</li>
+      </ul>
+      <p class="small">具体交互与动画以当前试玩版本的实际表现为准。</p>
+    </article>
+
+    <article class="card">
+      <h3>目标比赛规则（待实现）</h3>
+      <ul>
+        <li><b>比赛形式：</b>双方球队进行自动对战，玩家以赛前阵容构建和赛中决策为主要参与方式。</li>
+        <li><b>球员行为：</b>计划设计移动、争抢球权、传球与射门等行为逻辑。</li>
+        <li><b>比赛判定：</b>进球记录、比赛时长、终场条件与平局处理规则尚待明确。</li>
+        <li><b>道具机制：</b>计划让玩家使用教练点获取道具，具体效果与使用限制尚待实现。</li>
+        <li><b>赛后结算：</b>计划衔接比赛结果、奖励发放与球员成长。</li>
+      </ul>
+    </article>
+  </div>
+
+  <div class="grid" style="margin-top:14px">
+    <article class="card">
+      <h3>后续开发顺序</h3>
+      <ol>
+        <li>实现球员移动与基础追球逻辑。</li>
+        <li>完善争球、传球和射门行为。</li>
+        <li>加入进球记录、计时与胜负判定。</li>
+        <li>实现道具效果与赛后结算。</li>
+      </ol>
+    </article>
+
+    <article class="card">
+      <h3>验证重点</h3>
+      <ul>
+        <li>不同球员属性是否产生可观察的比赛差异。</li>
+        <li>阵容搭配是否影响球队表现。</li>
+        <li>道具是否能改变比赛进程。</li>
+        <li>比赛规则是否稳定、结果是否容易理解。</li>
+      </ul>
+      <p class="small">以上为后续开发与测试计划，不代表已经完成相关测试。</p>
+    </article>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="head">
+    <div>
+      <div class="kicker">04 / PLAYER SYSTEM</div>
+      <h2>球员属性与养成</h2>
+    </div>
+    <p>通过三项主属性区分球员的场上表现，并以定向升星强化球员特色。当前内容包含原有方案与新增规则建议，公式及数值仍需实现和验证。</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>属性</th>
+          <th>主要影响</th>
+          <th>建议计算方式</th>
+          <th>设计目的</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>速度</b></td>
+          <td>球员移动与追球效率</td>
+          <td>基础移速 × 属性修正系数</td>
+          <td>体现球员的移动优势</td>
+        </tr>
+        <tr>
+          <td><b>力量</b></td>
+          <td>争抢球权时的对抗表现</td>
+          <td>双方力量差参与争抢判定</td>
+          <td>体现球员的对抗优势</td>
+        </tr>
+        <tr>
+          <td><b>技巧</b></td>
+          <td>传球与射门表现</td>
+          <td>技巧参与传球和射门判定</td>
+          <td>体现球员的技术优势</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="small">
+    以上为新增规则建议，不是当前 Demo 已实现的计算逻辑。具体公式、参数范围及属性权重需要在比赛行为逻辑完成后确定。
+  </p>
+
+  <div class="grid" style="margin-top:14px">
+    <article class="card">
+      <h3>属性计算规则（建议）</h3>
+      <ul>
+        <li><b>移动：</b>根据基础移速与速度属性计算最终移动速度。</li>
+        <li><b>争球：</b>以双方力量差为主要因素之一，参与球权争夺判定。</li>
+        <li><b>传球：</b>根据传球球员的技巧、传球距离及其他影响因素计算成功结果。</li>
+        <li><b>射门：</b>根据射门球员的技巧、射门距离及其他影响因素计算射门结果。</li>
+      </ul>
+      <p class="small">
+        后续可采用参数化公式进行数值调整。争球、传球与射门还需明确随机因素、距离修正及判定边界，避免单一属性决定所有结果。
+      </p>
+    </article>
+
+    <article class="card">
+      <h3>球员差异与定位（建议）</h3>
+      <ul>
+        <li><b>速度型：</b>突出移动与追球能力，争球和传射能力相对受限。</li>
+        <li><b>力量型：</b>突出争抢球权能力，移动或技术能力存在取舍。</li>
+        <li><b>技巧型：</b>突出传球与射门能力，需要其他属性或阵容配合。</li>
+      </ul>
+      <p class="small">
+        以上为用于区分球员的设计方向，不代表现有 20 名球员已经完成定位与数值配置。
+      </p>
+    </article>
+  </div>
+
+  <div class="grid" style="margin-top:14px">
+    <article class="card">
+      <h3>抽卡与碎片养成（原有设定）</h3>
+      <ul>
+        <li>卡池共 20 名球员，初始获得 5 名随机等级球员。</li>
+        <li>每包必得 1 名球员与 1 件道具，并存在额外获得球员的概率。</li>
+        <li>重复球员转化为碎片，10 个碎片可将球员升至 2 星，最高 4 星。</li>
+      </ul>
+      <p class="small">
+        以上保留原方案设定。3 星、4 星所需碎片数量及其他升星条件尚待明确。
+      </p>
+    </article>
+
+    <article class="card">
+      <h3>定向升星机制（新增建议）</h3>
+      <ul>
+        <li>升星时优先强化球员的优势属性，而非所有属性等比例增长。</li>
+        <li>不同定位的球员采用不同的成长分配，保留速度型、力量型与技巧型的区别。</li>
+        <li>升星后仍保留球员原有的短板，避免高星球员在所有场景中都占据优势。</li>
+      </ul>
+      <p class="small">
+        成长幅度、各星级属性配置和碎片成本仍需设计；本机制尚未在当前原型中实现。
+      </p>
+    </article>
+  </div>
+
+  <div class="grid" style="margin-top:14px">
+    <article class="card">
+      <h3>数值验证计划</h3>
+      <ol>
+        <li>固定球员等级、阵容人数和对手条件，单独调整一项属性。</li>
+        <li>记录移动效率、争球成功率、传球成功率与射门转化率。</li>
+        <li>比较升星前后及不同球员定位下的表现差异。</li>
+        <li>检查某一属性是否过强，以及升星是否削弱了球员间的差异。</li>
+      </ol>
+    </article>
+
+    <article class="card">
+      <h3>当前实现状态</h3>
+      <ul>
+        <li>当前原型主要展示游戏界面与基础动画。</li>
+        <li>三项属性及养成机制属于策划设计内容。</li>
+        <li>属性计算公式、定向成长和相关测试尚待实现与验证。</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
 <section class="section"><div class="head"><div><div class="kicker">04 / IN-MATCH ITEMS</div><h2>局内道具与赛季解锁</h2></div><p>道具承担“比赛中的即时选择”功能，并与赛前卡包收集建立联系。</p></div><div class="grid"><article class="card"><h3>教练点机制</h3><p>教练点以每秒 1 点的速度累积，玩家在比赛过程中使用教练点抽取道具，尝试改变比赛走势。</p></article><article class="card"><h3>道具解锁逻辑</h3><p>低阶道具可直接在局内抽取；高阶道具需要先从卡包中解锁。道具解锁在同一赛季内共通。</p></article></div></section>
 <section class="section"><div class="head"><div><div class="kicker">05 / VALIDATION PLAN</div><h2>待验证问题与测试计划</h2></div><p>策划方案不仅描述系统，也需要说明如何判断系统是否有效。当前文档提出以控制变量法进行验证。</p></div><div class="risk"><article class="card"><div class="num">RISK 01</div><h3>球员属性是否有辨识度？</h3><p>不同属性球队在比赛中可能没有足够明显的差异，导致阵容搭配缺乏意义。</p><p><b>验证方式：</b>控制阵容其他条件，比较不同属性球队的胜率、单局时长和关键行为差异。</p></article><article class="card"><div class="num">RISK 02</div><h3>道具是否真正影响战局？</h3><p>如果局内道具效果太弱或使用成本过高，教练点系统可能只成为额外步骤。</p><p><b>验证方式：</b>对比有道具与无道具条件下的胜率、比赛时长和关键事件。</p></article><article class="card"><div class="num">RISK 03</div><h3>球员养成是否影响结果？</h3><p>如果升星前后对比赛结果没有可感知影响，重复收集与成长动力会减弱。</p><p><b>验证方式：</b>比较无养成与有养成阵容在相同对手条件下的胜率及表现。</p></article><article class="card"><div class="num">BALANCE</div><h3>如何根据测试结果调整？</h3><p>若属性优势过大，调整属性数值与影响系数；若道具影响不足，则考虑增强效果或降低使用成本。具体调整幅度应由测试数据决定。</p></article></div><div class="callout" style="margin-top:14px"><h3>建议记录的关键指标</h3><p>胜率、单局时长、球权争夺成功率、传球成功率、射门转化率、道具使用次数与使用后的局势变化、不同星级球员的表现差异。指标用于辅助定位问题，不应只凭单一胜率判断体验好坏。</p></div></section>
 <section class="section"><div class="head"><div><div class="kicker">06 / PROTOTYPE SCOPE</div><h2>当前原型范围</h2></div></div><div class="callout"><h3>原型定位：验证核心体验的基础演示</h3><p>根据原始方案说明，当前 Demo 使用 AI 辅助搭建，主要用于演示基础玩法与视觉表现；较复杂的系统部分仍以规则设计描述为主。因此，页面中的策划内容属于设计方案，不应被理解为所有机制都已在 Demo 中完整实现。后续可逐步补齐数值配置、战斗日志、对照测试与迭代记录。</p></div></section>

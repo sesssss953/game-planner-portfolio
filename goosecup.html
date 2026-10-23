@@ -6,7 +6,25 @@
 <header class="nav"><a class="logo" href="index.html">LEI CHUN<span> ✳</span></a><a class="back" href="index.html#work">← 返回作品集</a></header>
 <main><section class="hero"><div class="eyebrow">GAME DESIGN DOCUMENT · SYSTEM DESIGN</div><h1>《鹅王杯》<br>自动足球策划方案</h1><p class="lead">以轻量化自动足球对战为核心，把球员收集、阵容搭配、局内道具决策和赛后养成连接成一条循环。玩家通过抽卡组建球队，在自动进行的 PVE 比赛中观察阵容效果，并用随时间积累的教练点改变战局。</p><div class="meta"><span class="pill">品类：休闲策略 / 自动对战</span><span class="pill">核心体验：收集 × 搭配 × 观战决策</span><span class="pill">阶段：基础玩法原型</span></div><div class="hero-actions"><a class="btn primary" href="goosecute/index.html" target="_blank">启动游戏试玩 ↗</a><a class="btn" href="鹅王杯策划方案.docx" download>下载原始策划文档 ↓</a></div></section>
 <section class="section"><div class="head"><div><div class="kicker">01 / DESIGN PITCH</div><h2>设计目标与核心体验</h2></div><p>让玩家即使不直接操控每一次传球和射门，也能通过阵容构建与局内资源决策影响比赛过程。</p></div><div class="grid"><article class="card"><div class="num">PLAYER FANTASY</div><h3>组建一支属于自己的鹅球队</h3><p>通过球员抽取与重复球员转化，逐渐收集不同属性的球员，并根据阵容需求作出选择。</p></article><article class="card"><div class="num">TACTICAL CHOICE</div><h3>观战不是纯等待</h3><p>比赛过程中每秒获得 1 点教练点，使用教练点抽取局内道具，为自动对战加入即时决策。</p></article><article class="card"><div class="num">COLLECTION & GROWTH</div><h3>收集与成长形成长期目标</h3><p>重复球员转化为碎片，10 个碎片可将球员升至 2 星，最高 4 星；高星级提供更明显的属性提升。</p></article><article class="card"><div class="num">READABLE FEEDBACK</div><h3>通过比赛反馈理解搭配结果</h3><p>球员速度、力量、技巧分别影响移动、争抢与传射表现；玩家需要从比赛结果中学习阵容差异。</p></article></div></section>
-<section class="section"><div class="head"><div><div class="kicker">02 / CORE LOOP</div><h2>核心玩法循环</h2></div><p>将赛前的长期构筑与赛中的即时决策连接起来。以下为方案设想，不代表原型已实现全部规则。</p></div><div class="loop"><div class="step">获取球员卡包</div><div class="step">组建与调整阵容</div><div class="step">进入 PVE 自动比赛</div><div class="step">积累教练点并使用道具</div><div class="step">结算、收集碎片并成长</div></div></section>
+<section class="section">
+  <div class="head">
+    <div>
+      <div class="kicker">02 / CORE LOOP</div>
+      <h2>核心玩法循环</h2>
+    </div>
+    <p>本循环展示《鹅王杯》的目标玩法流程。当前原型主要用于展示游戏界面与基础动画，完整比赛逻辑及系统循环仍处于设计阶段。</p>
+  </div>
+
+  <div class="loop">
+    <div class="step">获取球员卡包</div>
+    <div class="step">组建与调整阵容</div>
+    <div class="step">进入 PVE 自动比赛</div>
+    <div class="step">积累教练点并使用道具</div>
+    <div class="step">结算、收集碎片并成长</div>
+  </div>
+
+  <p class="note">以上为目标玩法设计，不代表相关功能均已在当前 Demo 中实现。球员自动行为、比赛判定、道具效果及赛后养成仍需逐步实现与验证。</p>
+</section>
 <section class="section"><div class="head"><div><div class="kicker">03 / PLAYER SYSTEM</div><h2>球员属性与养成</h2></div><p>方案当前将球员差异归纳为三项主属性；实际权重与平衡性需要通过测试验证。</p></div><div class="table-wrap"><table><thead><tr><th>属性</th><th>预期作用</th><th>当前设计风险</th><th>测试关注点</th></tr></thead><tbody><tr><td><b>速度</b></td><td>影响球员移动速度。</td><td>速度差异可能对比赛结果影响过大。</td><td>观察高速度阵容的胜率、推进效率与单局时长。</td></tr><tr><td><b>力量</b></td><td>影响争抢球权表现。</td><td>力量球员可能对其他球员形成过强压制。</td><td>比较不同力量水平下的球权争夺成功率。</td></tr><tr><td><b>技巧</b></td><td>影响传球与射门表现。</td><td>技巧的收益可能不如速度、力量直观。</td><td>观察传球成功率、射门质量及属性提升后的收益。</td></tr></tbody></table></div><div class="grid" style="margin-top:14px"><article class="card"><h3>抽卡规则（方案设定）</h3><ul><li>卡池共 20 名球员，初始获得 5 名随机等级球员。</li><li>每包必得 1 名球员与 1 件道具；存在额外获得球员的概率。</li><li>重复球员转化为碎片，10 个碎片可升至 2 星，最高 4 星。</li></ul></article><article class="card"><h3>每日资源与保留机制</h3><ul><li>每日登录提供 3 次免费抽卡机会。</li><li>看广告、分享好友可增加抽卡机会，各每日限定 3 次。</li><li>球员每日 0 点刷新；玩家可锁定 2 名球员保留，广告与分享奖励可额外增加保留名额。</li></ul><p class="small">上述为原始方案中的规则设想，实际产品化前需继续评估体验节奏、广告频率与数值经济。</p></article></div></section>
 <section class="section"><div class="head"><div><div class="kicker">04 / IN-MATCH ITEMS</div><h2>局内道具与赛季解锁</h2></div><p>道具承担“比赛中的即时选择”功能，并与赛前卡包收集建立联系。</p></div><div class="grid"><article class="card"><h3>教练点机制</h3><p>教练点以每秒 1 点的速度累积，玩家在比赛过程中使用教练点抽取道具，尝试改变比赛走势。</p></article><article class="card"><h3>道具解锁逻辑</h3><p>低阶道具可直接在局内抽取；高阶道具需要先从卡包中解锁。道具解锁在同一赛季内共通。</p></article></div></section>
 <section class="section"><div class="head"><div><div class="kicker">05 / VALIDATION PLAN</div><h2>待验证问题与测试计划</h2></div><p>策划方案不仅描述系统，也需要说明如何判断系统是否有效。当前文档提出以控制变量法进行验证。</p></div><div class="risk"><article class="card"><div class="num">RISK 01</div><h3>球员属性是否有辨识度？</h3><p>不同属性球队在比赛中可能没有足够明显的差异，导致阵容搭配缺乏意义。</p><p><b>验证方式：</b>控制阵容其他条件，比较不同属性球队的胜率、单局时长和关键行为差异。</p></article><article class="card"><div class="num">RISK 02</div><h3>道具是否真正影响战局？</h3><p>如果局内道具效果太弱或使用成本过高，教练点系统可能只成为额外步骤。</p><p><b>验证方式：</b>对比有道具与无道具条件下的胜率、比赛时长和关键事件。</p></article><article class="card"><div class="num">RISK 03</div><h3>球员养成是否影响结果？</h3><p>如果升星前后对比赛结果没有可感知影响，重复收集与成长动力会减弱。</p><p><b>验证方式：</b>比较无养成与有养成阵容在相同对手条件下的胜率及表现。</p></article><article class="card"><div class="num">BALANCE</div><h3>如何根据测试结果调整？</h3><p>若属性优势过大，调整属性数值与影响系数；若道具影响不足，则考虑增强效果或降低使用成本。具体调整幅度应由测试数据决定。</p></article></div><div class="callout" style="margin-top:14px"><h3>建议记录的关键指标</h3><p>胜率、单局时长、球权争夺成功率、传球成功率、射门转化率、道具使用次数与使用后的局势变化、不同星级球员的表现差异。指标用于辅助定位问题，不应只凭单一胜率判断体验好坏。</p></div></section>

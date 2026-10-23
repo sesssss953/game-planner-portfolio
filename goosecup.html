@@ -4,8 +4,56 @@
 :root{--bg:#f5f3ee;--paper:#fffefa;--ink:#24231f;--muted:#716d65;--line:#dedad1;--accent:#e96f58;--blue:#dce8f4;--green:#dce8d5;--yellow:#f7e8b9}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}.wrap{width:min(1000px,calc(100% - 36px));margin:auto}a{color:inherit;text-decoration:none}.nav{height:70px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-size:13px}.logo{font-weight:900;letter-spacing:-.04em}.logo span{color:var(--accent)}.back{border-bottom:1px solid var(--accent);font-weight:700}.hero{padding:64px 0 40px}.eyebrow,.kicker{font-size:11px;letter-spacing:.14em;color:var(--accent);font-weight:900}.hero h1{font-size:clamp(38px,7vw,68px);line-height:1.08;letter-spacing:-.06em;margin:16px 0}.lead{font-size:17px;max-width:760px;color:#5f5a52}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.pill{font-size:11px;border:1px solid var(--line);background:var(--paper);padding:6px 10px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;padding:11px 16px;border:1px solid var(--ink);font-size:13px;font-weight:800}.btn.primary{background:var(--ink);color:white}.section{padding:36px 0}.head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:20px}.head h2{font-size:clamp(25px,4vw,36px);line-height:1.2;letter-spacing:-.04em;margin:6px 0 0}.head p{max-width:420px;color:var(--muted);font-size:13px;margin:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{background:var(--paper);border:1px solid var(--line);padding:22px}.card h3{font-size:18px;margin:0 0 8px}.card p{font-size:13px;color:#625e57;margin:0}.num{font-size:11px;color:var(--accent);font-weight:900;letter-spacing:.12em}.loop{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:stretch}.step{background:var(--paper);border:1px solid var(--line);padding:14px 10px;text-align:center;font-size:12px;font-weight:750;display:grid;align-content:center;min-height:92px}.step:not(:last-child):after{content:'↓';color:var(--accent);font-size:18px}.table-wrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}table{width:100%;border-collapse:collapse;font-size:13px;min-width:540px}th,td{text-align:left;padding:13px 15px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f0ede5;font-size:12px}tr:last-child td{border-bottom:0}.callout{background:var(--blue);padding:22px;border:1px solid #cbd9e8}.callout h3{margin:0 0 8px}.callout p{margin:0;font-size:13px}.risk{display:grid;grid-template-columns:1fr 1fr;gap:12px}.risk .card{border-top:3px solid var(--accent)}.foot{padding:30px 0 50px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;margin-top:30px}.small{font-size:12px;color:var(--muted)}ul{padding-left:20px;margin:8px 0 0}li{margin:5px 0;font-size:13px}@media(max-width:680px){.grid,.risk{grid-template-columns:1fr}.loop{grid-template-columns:1fr}.step{min-height:54px}.step:not(:last-child):after{content:'↓'}.head{display:block}.head p{margin-top:10px}.hero{padding-top:44px}}
 </style></head><body><div class="wrap">
 <header class="nav"><a class="logo" href="index.html">LEI CHUN<span> ✳</span></a><a class="back" href="index.html#work">← 返回作品集</a></header>
-<main><section class="hero"><div class="eyebrow">GAME DESIGN DOCUMENT · SYSTEM DESIGN</div><h1>《鹅王杯》<br>自动足球策划方案</h1><p class="lead">以轻量化自动足球对战为核心，把球员收集、阵容搭配、局内道具决策和赛后养成连接成一条循环。玩家通过抽卡组建球队，在自动进行的 PVE 比赛中观察阵容效果，并用随时间积累的教练点改变战局。</p><div class="meta"><span class="pill">品类：休闲策略 / 自动对战</span><span class="pill">核心体验：收集 × 搭配 × 观战决策</span><span class="pill">阶段：基础玩法原型</span></div><div class="hero-actions"><a class="btn primary" href="goosecute/index.html" target="_blank">启动游戏试玩 ↗</a><a class="btn" href="鹅王杯策划方案.docx" download>下载原始策划文档 ↓</a></div></section>
-<section class="section"><div class="head"><div><div class="kicker">01 / DESIGN PITCH</div><h2>设计目标与核心体验</h2></div><p>让玩家即使不直接操控每一次传球和射门，也能通过阵容构建与局内资源决策影响比赛过程。</p></div><div class="grid"><article class="card"><div class="num">PLAYER FANTASY</div><h3>组建一支属于自己的鹅球队</h3><p>通过球员抽取与重复球员转化，逐渐收集不同属性的球员，并根据阵容需求作出选择。</p></article><article class="card"><div class="num">TACTICAL CHOICE</div><h3>观战不是纯等待</h3><p>比赛过程中每秒获得 1 点教练点，使用教练点抽取局内道具，为自动对战加入即时决策。</p></article><article class="card"><div class="num">COLLECTION & GROWTH</div><h3>收集与成长形成长期目标</h3><p>重复球员转化为碎片，10 个碎片可将球员升至 2 星，最高 4 星；高星级提供更明显的属性提升。</p></article><article class="card"><div class="num">READABLE FEEDBACK</div><h3>通过比赛反馈理解搭配结果</h3><p>球员速度、力量、技巧分别影响移动、争抢与传射表现；玩家需要从比赛结果中学习阵容差异。</p></article></div></section>
+
+<main>
+<section class="hero">
+  <div class="eyebrow">GAME DESIGN PORTFOLIO · PROJECT 01</div>
+  <h1>《鹅王杯》<br>自动足球养成游戏</h1>
+
+  <p class="lead">
+    一款以可爱鹅球员为主题的休闲策略游戏。玩家通过收集球员、搭配阵容，
+    参与自动足球对战，并利用局内资源决策影响比赛体验。
+    项目围绕球员收集、阵容策略与成长循环展开，目前以网页原型和系统策划文档为主要展示成果。
+  </p>
+
+  <div class="meta">
+    <span class="pill">项目方向：游戏系统策划</span>
+    <span class="pill">游戏类型：休闲策略 / 自动对战</span>
+    <span class="pill">核心体验：收集 × 搭配 × 观战决策</span>
+    <span class="pill">项目阶段：基础玩法原型</span>
+  </div>
+
+  <div class="hero-actions">
+    <a class="btn primary" href="goosecute/index.html" target="_blank">试玩游戏原型 ↗</a>
+    <a class="btn" href="鹅王杯策划方案.docx" download>下载策划文档 ↓</a>
+  </div>
+
+  <div class="grid" style="margin-top:30px">
+    <article class="card">
+      <div class="num">01 / SYSTEM DESIGN</div>
+      <h3>系统与玩法设计</h3>
+      <p>
+        梳理核心玩法循环、比赛规则、球员属性、抽卡养成及局内道具机制，
+        并区分已有设定与待验证方案。
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="num">02 / PROTOTYPE</div>
+      <h3>网页原型制作</h3>
+      <p>
+        通过网页原型展示游戏界面、鹅球员视觉表现与基础动画。
+        完整比赛逻辑和部分养成系统仍处于规划或待开发阶段。
+      </p>
+    </article>
+  </div>
+
+  <p class="small" style="margin-top:14px">
+    项目说明：本页面包含原有设计、后续优化建议及原型实现情况；
+    策划方案不等同于已完成的游戏功能。
+  </p>
+</section>
+<h2>设计目标与核心体验</h2></div><p>让玩家即使不直接操控每一次传球和射门，也能通过阵容构建与局内资源决策影响比赛过程。</p></div><div class="grid"><article class="card"><div class="num">PLAYER FANTASY</div><h3>组建一支属于自己的鹅球队</h3><p>通过球员抽取与重复球员转化，逐渐收集不同属性的球员，并根据阵容需求作出选择。</p></article><article class="card"><div class="num">TACTICAL CHOICE</div><h3>观战不是纯等待</h3><p>比赛过程中每秒获得 1 点教练点，使用教练点抽取局内道具，为自动对战加入即时决策。</p></article><article class="card"><div class="num">COLLECTION & GROWTH</div><h3>收集与成长形成长期目标</h3><p>重复球员转化为碎片，10 个碎片可将球员升至 2 星，最高 4 星；高星级提供更明显的属性提升。</p></article><article class="card"><div class="num">READABLE FEEDBACK</div><h3>通过比赛反馈理解搭配结果</h3><p>球员速度、力量、技巧分别影响移动、争抢与传射表现；玩家需要从比赛结果中学习阵容差异。</p></article></div></section>
 <section class="section">
   <div class="head">
     <div>

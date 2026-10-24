@@ -352,5 +352,187 @@
 <section class="section"><div class="head"><div><div class="kicker">06 / IN-MATCH ITEMS</div><h2>局内道具与赛季解锁</h2></div><p>道具承担“比赛中的即时选择”功能，并与赛前卡包收集建立联系。</p></div><div class="grid"><article class="card"><h3>教练点机制</h3><p>教练点以每秒 1 点的速度累积，玩家在比赛过程中使用教练点抽取道具，尝试改变比赛走势。</p></article><article class="card"><h3>道具解锁逻辑</h3><p>低阶道具可直接在局内抽取；高阶道具需要先从卡包中解锁。道具解锁在同一赛季内共通。</p></article></div></section>
 <section class="section"><div class="head"><div><div class="kicker">07 / VALIDATION PLAN</div><h2>待验证问题与测试计划</h2></div><p>策划方案不仅描述系统，也需要说明如何判断系统是否有效。当前文档提出以控制变量法进行验证。</p></div><div class="risk"><article class="card"><div class="num">RISK 01</div><h3>球员属性是否有辨识度？</h3><p>不同属性球队在比赛中可能没有足够明显的差异，导致阵容搭配缺乏意义。</p><p><b>验证方式：</b>控制阵容其他条件，比较不同属性球队的胜率、单局时长和关键行为差异。</p></article><article class="card"><div class="num">RISK 02</div><h3>道具是否真正影响战局？</h3><p>如果局内道具效果太弱或使用成本过高，教练点系统可能只成为额外步骤。</p><p><b>验证方式：</b>对比有道具与无道具条件下的胜率、比赛时长和关键事件。</p></article><article class="card"><div class="num">RISK 03</div><h3>球员养成是否影响结果？</h3><p>如果升星前后对比赛结果没有可感知影响，重复收集与成长动力会减弱。</p><p><b>验证方式：</b>比较无养成与有养成阵容在相同对手条件下的胜率及表现。</p></article><article class="card"><div class="num">BALANCE</div><h3>如何根据测试结果调整？</h3><p>若属性优势过大，调整属性数值与影响系数；若道具影响不足，则考虑增强效果或降低使用成本。具体调整幅度应由测试数据决定。</p></article></div><div class="callout" style="margin-top:14px"><h3>建议记录的关键指标</h3><p>胜率、单局时长、球权争夺成功率、传球成功率、射门转化率、道具使用次数与使用后的局势变化、不同星级球员的表现差异。指标用于辅助定位问题，不应只凭单一胜率判断体验好坏。</p></div></section>
 <section class="section"><div class="head"><div><div class="kicker">08 / PROTOTYPE SCOPE</div><h2>当前原型范围</h2></div></div><div class="callout"><h3>原型定位：验证核心体验的基础演示</h3><p>根据原始方案说明，当前 Demo 使用 AI 辅助搭建，主要用于演示基础玩法与视觉表现；较复杂的系统部分仍以规则设计描述为主。因此，页面中的策划内容属于设计方案，不应被理解为所有机制都已在 Demo 中完整实现。后续可逐步补齐数值配置、战斗日志、对照测试与迭代记录。</p></div></section>
-<div class="hero-actions" style="padding-bottom:30px"><a class="btn primary" href="goosecute/index.html" target="_blank">试玩《鹅王杯》 ↗</a><a class="btn" href="index.html#work">返回作品集首页 ↗</a><a class="btn" href="鹅王杯策划方案.docx" download>下载 DOCX 原文 ↓</a></div></main>
+<div class="hero-actions" style="padding-bottom:30px"><a class="btn primary" href="goosecute/index.html" target="_blank">试玩《鹅王杯》 ↗</a><a class="btn" href="index.html#work">返回作品集首页 ↗</a><a class="btn" href="鹅王杯策划方案.docx" download>下载 DOCX 原文 ↓</a></div>
+
+<style>
+.goose-doc-section {
+  margin: 32px 0;
+  color: #26352d;
+}
+.goose-doc-section h2 {
+  margin-bottom: 8px;
+  font-size: 24px;
+}
+.goose-doc-lead {
+  color: #718078;
+  line-height: 1.8;
+  font-size: 14px;
+}
+.goose-doc-loop {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 22px 0;
+}
+.goose-doc-step {
+  padding: 18px;
+  border: 1px solid #dce7dc;
+  border-radius: 12px;
+  background: #f7faf5;
+}
+.goose-doc-step b {
+  display: block;
+  margin-bottom: 8px;
+  color: #33794c;
+}
+.goose-doc-step p {
+  margin: 0;
+  color: #647168;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.goose-doc-table-wrap {
+  overflow-x: auto;
+  margin-top: 18px;
+}
+.goose-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.goose-doc-table th,
+.goose-doc-table td {
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #e5eae5;
+}
+.goose-doc-table th {
+  background: #f1f6ef;
+  white-space: nowrap;
+}
+.goose-doc-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: #e8f3e8;
+  color: #33794c;
+  font-size: 12px;
+}
+.goose-doc-note {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-left: 3px solid #78a982;
+  background: #f5f8f3;
+  color: #56645a;
+  font-size: 13px;
+  line-height: 1.8;
+}
+@media (max-width: 600px) {
+  .goose-doc-loop {
+    grid-template-columns: 1fr;
+  }
+  .goose-doc-section h2 {
+    font-size: 21px;
+  }
+}
+</style>
+
+<section class="goose-doc-section" id="core-loop">
+  <h2>核心玩法循环</h2>
+  <p class="goose-doc-lead">
+    以阵容构筑与自动足球对战为核心，通过持续获得资源、调整阵容和强化角色，
+    形成“准备—战斗—成长—再挑战”的循环。
+  </p>
+
+  <div class="goose-doc-loop">
+    <div class="goose-doc-step">
+      <b>01 · 收集与组队</b>
+      <p>获取不同鹅角色，根据已有角色与阵容需求，选择上场成员并完成阵容配置。</p>
+    </div>
+    <div class="goose-doc-step">
+      <b>02 · 自动对战</b>
+      <p>双方鹅队在球场上自动进行比赛。玩家主要通过战前配置与成长决策影响比赛结果。</p>
+    </div>
+    <div class="goose-doc-step">
+      <b>03 · 资源获取</b>
+      <p>对战过程中持续积累教练点，用于获取道具，为后续阵容成长提供资源。</p>
+    </div>
+    <div class="goose-doc-step">
+      <b>04 · 成长决策</b>
+      <p>结合角色获取与重复角色转化机制，规划升星资源，逐步完善阵容。</p>
+    </div>
+    <div class="goose-doc-step">
+      <b>05 · 调整阵容</b>
+      <p>根据现有角色和资源情况，重新考虑成员组合与成长优先级。</p>
+    </div>
+    <div class="goose-doc-step">
+      <b>06 · 进入下一轮</b>
+      <p>带着新的阵容与成长结果继续挑战，形成持续收集、构筑和强化的体验。</p>
+    </div>
+  </div>
+</section>
+
+<section class="goose-doc-section" id="system-rules">
+  <h2>核心系统规则</h2>
+  <p class="goose-doc-lead">
+    将核心创意拆解为可说明、可验证的规则。当前数值以策划方案为准，
+    不代表所有机制均已在原型中实现。
+  </p>
+
+  <div class="goose-doc-table-wrap">
+    <table class="goose-doc-table">
+      <thead>
+        <tr>
+          <th>系统模块</th>
+          <th>规则设计</th>
+          <th>设计目的</th>
+          <th>当前状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>教练点产出</td>
+          <td>每秒产生 1 点教练点。</td>
+          <td>建立持续资源积累，为道具选择提供基础。</td>
+          <td><span class="goose-doc-tag">方案已定义</span></td>
+        </tr>
+        <tr>
+          <td>道具获取</td>
+          <td>消耗教练点获取道具，具体消耗与道具效果需在数值表中进一步定义。</td>
+          <td>让资源积累转化为成长决策。</td>
+          <td><span class="goose-doc-tag">待完善</span></td>
+        </tr>
+        <tr>
+          <td>重复角色</td>
+          <td>重复获得的角色可转化为碎片。</td>
+          <td>让重复获取也能为长期养成提供进展。</td>
+          <td><span class="goose-doc-tag">方案已定义</span></td>
+        </tr>
+        <tr>
+          <td>角色升星</td>
+          <td>按现有方案，10 个碎片可升至 2 星，最高 4 星；更高星级的具体消耗仍需补充。</td>
+          <td>建立角色成长目标与资源规划空间。</td>
+          <td><span class="goose-doc-tag">部分规则待补</span></td>
+        </tr>
+        <tr>
+          <td>自动对战</td>
+          <td>双方角色自动进行足球比赛，玩家通过阵容和成长选择参与策略决策。</td>
+          <td>降低实时操作负担，突出战前构筑与成长。</td>
+          <td><span class="goose-doc-tag">原型持续开发</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="goose-doc-note">
+    <strong>后续验证方向：</strong>
+    教练点获取与消耗是否平衡、道具选择是否具有策略差异、
+    升星成长是否合理，以及阵容调整能否对比赛结果产生可感知的影响。
+    这些将作为下一阶段的设计与测试重点。
+  </div>
+</section>
+
+</main>
 <footer class="foot">© 2026 雷春 · 《鹅王杯》策划方案。页面根据上传的原始策划文档整理，规则与数值均以方案设想为准，待原型验证。</footer></div></body></html>

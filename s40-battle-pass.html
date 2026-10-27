@@ -318,7 +318,37 @@ main > .panel:first-child a:hover {
     max-width: 100%;
   }
 }
+/* ===== 个人建议：突出问题分析与优化方案 ===== */
+.analysis-note h3 {
+  letter-spacing: -0.02em;
+}
 
+.analysis-note h3::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 17px;
+  margin-right: 10px;
+  border-radius: 3px;
+  background: #c69a54;
+  vertical-align: -2px;
+}
+
+/* 优化建议卡片使用更明显的强调色 */
+.analysis-note:has(h3) {
+  transition: border-color 0.2s ease;
+}
+
+.analysis-note:has(h3) h3 {
+  color: #3b3328;
+}
+
+@media (max-width: 600px) {
+  .analysis-note h3::before {
+    height: 15px;
+    margin-right: 8px;
+  }
+}
 
 </style>
 </head>
@@ -416,7 +446,29 @@ main > .panel:first-child a:hover {
       <tr><td>80级</td><td>战令专属选将特效（90日）</td></tr>
     </tbody>
   </table>
-  
+  <div class="analysis-note">
+  <h3>奖励结构观察</h3>
+  <ul>
+    <li>
+      <strong>免费与进阶奖励形成差异：</strong>
+      免费路线提供阶段性奖励，进阶路线则配置更有吸引力的皮肤奖励，
+      让不同付费意愿的玩家都能获得持续推进战令的理由。
+    </li>
+    <li>
+      <strong>奖励价值与等级进度相结合：</strong>
+      重要奖励分布在不同等级节点，中间穿插碎片及其他资源，
+      使玩家在追求高价值奖励的过程中，也能持续获得阶段性反馈。
+    </li>
+    <li>
+      <strong>英雄与皮肤组合影响吸引力：</strong>
+      奖励会涉及不同英雄的皮肤。对玩家而言，奖励是否具有吸引力，
+      不仅取决于品质，也与英雄偏好有关。
+    </li>
+  </ul>
+  <p class="meta">
+    以上为基于当前拆解内容的设计观察，不代表已通过玩家数据验证。
+  </p>
+</div>
 
 <div class="analysis-note">
   <h3>奖励投放与成长节奏</h3>
@@ -461,7 +513,7 @@ main > .panel:first-child a:hover {
   </section>
 
   <section class="panel">
-    <h2>04 / 星币兑换结构</h2>
+    <h2>04 / 战令币兑换结构</h2>
     <p>资料列出了免费可兑换内容、进阶版解锁兑换内容，以及部分返场商品和赛季限购数量。</p>
     
 <div class="analysis-note">
@@ -471,7 +523,7 @@ main > .panel:first-child a:hover {
 <ul>
   <li>
     <strong>抽奖形式：</strong>
-    通过抽奖形式获取往期战令皮肤及特效，消耗玩家持有的战令币。玩家为了获得心仪的皮肤，可能会产生继续积累战令币的动力。
+    通过抽奖形式获取往期战令皮肤及特效，需要消耗玩家持有的战令币。对于有特定收集目标的玩家，心仪的返场奖励可能成为其继续积累战令币的动力。
   </li>
   <li>
     <strong>进阶与活跃：</strong>
@@ -483,7 +535,7 @@ main > .panel:first-child a:hover {
   </li>
   <li>
     <strong>系统作用：</strong>
-    兑换目标与等级要求相结合，可能促使部分玩家继续参与战令活动，或选择进阶战令以获取更多兑换资源。
+    兑换目标、战令等级与战令币消耗共同构成兑换门槛。玩家需要结合自身的收集目标，权衡继续参与活动所需的时间投入与资源成本。
   </li>
 </ul>
 

@@ -135,6 +135,190 @@ footer {
 }
 
 
+/* ===== S40 战令拆解页：整体视觉优化 ===== */
+
+/* 内容卡片 */
+.panel {
+  border: 1px solid #e8e1d5;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(62, 48, 31, 0.045);
+  background: #fffefa;
+  padding: 28px 30px;
+  margin-bottom: 22px;
+}
+
+/* 页面主标题 */
+h1 {
+  letter-spacing: -0.035em;
+  line-height: 1.35;
+  margin-top: 12px;
+  margin-bottom: 16px;
+}
+
+/* 模块标题 */
+.panel h2 {
+  font-size: 21px;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  margin-top: 0;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee7db;
+}
+
+/* 分析小标题 */
+.panel h3,
+.analysis-note h3 {
+  color: #514333;
+  letter-spacing: -0.01em;
+}
+
+/* 正文 */
+.panel p,
+.panel li {
+  line-height: 1.9;
+}
+
+/* 表格 */
+.panel table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0 24px;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.panel th {
+  background: #f5f0e7;
+  color: #514333;
+  font-weight: 700;
+  text-align: left;
+}
+
+.panel th,
+.panel td {
+  padding: 11px 13px;
+  border-bottom: 1px solid #ece5da;
+  vertical-align: top;
+}
+
+.panel tr:last-child td {
+  border-bottom: none;
+}
+
+/* 下载链接 */
+.panel a {
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+/* 分析卡片与正文卡片拉开层次 */
+.analysis-note {
+  border-color: #e9dfca;
+  border-left: 3px solid var(--yellow);
+  background: #faf7f0;
+  box-shadow: none;
+}
+
+/* 小屏幕适配 */
+@media (max-width: 700px) {
+  .panel {
+    padding: 20px 17px;
+    margin-bottom: 16px;
+  }
+
+  .panel h2 {
+    font-size: 19px;
+  }
+
+  .panel table {
+    font-size: 13px;
+  }
+
+  .panel th,
+  .panel td {
+    padding: 9px 8px;
+  }
+}
+
+/* ===== 顶部作品介绍区 ===== */
+
+/* 页面标题更突出 */
+h1 {
+  max-width: 900px;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.3;
+  color: #25231f;
+}
+
+/* 标题上方的英文栏目标签 */
+.kicker,
+.eyebrow {
+  color: #a16d35;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* 页面整体阅读宽度 */
+main {
+  width: min(100% - 40px, 1040px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 顶部介绍文字 */
+main > p {
+  line-height: 1.9;
+}
+
+/* 下载区：与正文卡片形成区分 */
+main > .panel:first-child {
+  border: 1px solid #e7d7b9;
+  border-top: 3px solid #c69a54;
+  background: linear-gradient(135deg, #fffefa 0%, #f8f1e5 100%);
+  box-shadow: 0 8px 24px rgba(83, 61, 31, 0.06);
+}
+
+/* 下载入口 */
+main > .panel:first-child a {
+  display: inline-block;
+  margin: 4px 8px 4px 0;
+  padding: 9px 13px;
+  border: 1px solid #e5d5b8;
+  border-radius: 7px;
+  background: #fffefa;
+  color: #775126;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+main > .panel:first-child a:hover {
+  background: #f3e6cf;
+  border-color: #c69a54;
+}
+
+/* 手机端 */
+@media (max-width: 600px) {
+  main {
+    width: calc(100% - 28px);
+  }
+
+  h1 {
+    font-size: 29px;
+  }
+
+  main > .panel:first-child a {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+  }
+}
+
 
 </style>
 </head>
@@ -239,8 +423,8 @@ footer {
   <ul>
     <li>战令采用两款英雄搭配系列皮肤的形式，常规配置为一款冷门英雄皮肤与一款热门英雄皮肤；进阶档解锁热门英雄皮肤，免费档则提供冷门英雄皮肤。</li>
     <li>免费档在 5 级提供亚瑟皮肤，20 级提供限时奖励，40 级解锁亚瑟史诗特效相关奖励。通过不同等级设置奖励节点，可以为免费玩家提供阶段性目标，并维持每周参与动力。</li>
-    <li>进阶档在 30 级提供安琪拉皮肤。按照原文的分析，这一奖励预计可在赛季开启约两周后获得，为付费玩家提供较早的奖励反馈。</li>
-    <li>原文还关注 75—80 级左右的高品质奖励投放，认为这有助于维持进阶玩家后续的参与动力，并增强其对付费价值的感知。</li>
+    <li>进阶档在 30 级提供安琪拉皮肤。这一奖励预计可在赛季开启约两周后获得，为付费玩家提供较早的奖励反馈。</li>
+    <li>75—80 级左右的高品质奖励投放，这有助于维持进阶玩家后续的参与动力，并增强其对付费价值的感知。</li>
     <li>冲级过程中穿插卡片、皮肤碎片和英雄碎片等资源奖励，让玩家在追求赛季核心奖励的同时，也能获得其他阶段性回报。</li>
   </ul>
 </div>
@@ -259,7 +443,7 @@ footer {
 <ul>
   <li>
     <strong>每周任务刷新：</strong>
-    每周提供 8 次使用钻石刷新任务的机会。按照原文的分析，这既能消耗玩家手中闲置的钻石，也能让玩家选择更适合自己的任务，降低任务完成难度。
+    每周提供 8 次使用钻石刷新任务的机会。这既能消耗玩家手中闲置的钻石，也能让玩家选择更适合自己的任务，降低任务完成难度。
   </li>
   <li>
     <strong>任务经验与完成成本：</strong>
@@ -282,7 +466,7 @@ footer {
     
 <div class="analysis-note">
   
-<h3>原文分析：战令币兑换与活跃引导</h3>
+<h3>战令币兑换与活跃引导</h3>
 
 <ul>
   <li>

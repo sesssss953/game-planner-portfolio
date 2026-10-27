@@ -116,7 +116,38 @@
 .card li{
   line-height:1.8;
   margin-bottom:6px;
-}.num{font-size:11px;color:var(--accent);font-weight:900;letter-spacing:.12em}.loop{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:stretch}.step{background:var(--paper);border:1px solid var(--line);padding:14px 10px;text-align:center;font-size:12px;font-weight:750;display:grid;align-content:center;min-height:92px}.step:not(:last-child):after{content:'↓';color:var(--accent);font-size:18px}
+}.num{font-size:11px;color:var(--accent);font-weight:900;letter-spacing:.12em}.loop {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}.step {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px 12px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 750;
+  display: grid;
+  align-content: center;
+  min-height: 100px;
+  box-shadow: 0 3px 10px rgba(36, 35, 31, 0.025);
+}
+
+.step:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  top: 50%;
+  right: -17px;
+  z-index: 1;
+  width: 20px;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-size: 20px;
+  font-weight: 800;
+}
 .table-wrap{
   overflow-x:auto;
   background:var(--paper);
@@ -195,9 +226,13 @@ tbody td:first-child{white-space:nowrap;font-weight:700}th{background:#f0ede5;fo
     min-height:54px;
   }
 
-  .step:not(:last-child):after{
-    content:'↓';
-  }
+  .step:not(:last-child)::after {
+  content: "↓";
+  top: auto;
+  right: 50%;
+  bottom: -20px;
+  transform: translateX(50%);
+}
 
   .head{
     display:flex;

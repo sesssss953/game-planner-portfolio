@@ -1,7 +1,75 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="《鹅王杯：自动足球》游戏策划方案，展示核心循环、球员收集养成、局内道具与验证计划。"><title>《鹅王杯》策划方案｜雷春</title>
 <style>
-:root{--bg:#f5f3ee;--paper:#fffefa;--ink:#24231f;--muted:#716d65;--line:#dedad1;--accent:#e96f58;--blue:#dce8f4;--green:#dce8d5;--yellow:#f7e8b9}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}.wrap{width:min(1200px,calc(100% - 48px));margin:0 auto}a{color:inherit;text-decoration:none}.nav{height:70px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-size:13px}.logo{font-weight:900;letter-spacing:-.04em}.logo span{color:var(--accent)}.back{border-bottom:1px solid var(--accent);font-weight:700}.hero{padding:64px 0 40px}.eyebrow,.kicker{font-size:11px;letter-spacing:.14em;color:var(--accent);font-weight:900}.hero h1{font-size:clamp(38px,7vw,68px);line-height:1.08;letter-spacing:-.06em;margin:16px 0}.lead{font-size:17px;max-width:760px;color:#5f5a52}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.pill{font-size:11px;border:1px solid var(--line);background:var(--paper);padding:6px 10px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;padding:11px 16px;border:1px solid var(--ink);font-size:13px;font-weight:800}.btn.primary{background:var(--ink);color:white}.section{
+:root{--bg:#f5f3ee;--paper:#fffefa;--ink:#24231f;--muted:#716d65;--line:#dedad1;--accent:#e96f58;--blue:#dce8f4;--green:#dce8d5;--yellow:#f7e8b9}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}.wrap{width:min(1200px,calc(100% - 48px));margin:0 auto}a{color:inherit;text-decoration:none}.nav{height:70px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-size:13px}.logo{font-weight:900;letter-spacing:-.04em}.logo span{color:var(--accent)}.back{border-bottom:1px solid var(--accent);font-weight:700}.hero {
+  position: relative;
+  padding: 76px 0 56px;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero h1 {
+  max-width: 900px;
+  margin: 18px 0 20px;
+  font-size: clamp(42px, 7vw, 76px);
+  line-height: 1.12;
+  letter-spacing: -0.055em;
+  font-weight: 900;
+}
+
+.hero .lead {
+  max-width: 680px;
+  font-size: 16px;
+  line-height: 1.95;
+  color: var(--muted);
+}
+
+.hero .meta {
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.hero .pill {
+  padding: 7px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.hero .hero-actions {
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.hero .btn {
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.hero .btn:hover {
+  transform: translateY(-2px);
+}
+
+.hero .btn.primary {
+  background: var(--ink);
+  color: #fffefa;
+}
+
+@media (max-width: 680px) {
+  .hero {
+    padding: 48px 0 36px;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 11vw, 54px);
+  }
+
+  .hero .lead {
+    font-size: 14px;
+  }
+}.eyebrow,.kicker{font-size:11px;letter-spacing:.14em;color:var(--accent);font-weight:900}.hero h1{font-size:clamp(38px,7vw,68px);line-height:1.08;letter-spacing:-.06em;margin:16px 0}.lead{font-size:17px;max-width:760px;color:#5f5a52}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.pill{font-size:11px;border:1px solid var(--line);background:var(--paper);padding:6px 10px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;padding:11px 16px;border:1px solid var(--ink);font-size:13px;font-weight:800}.btn.primary{background:var(--ink);color:white}.section{
   padding:44px 0;
 }.head{
   display:flex;
@@ -53,8 +121,6 @@
   overflow-x:auto;
   background:var(--paper);
   border:1px solid var(--line);
-  border-radius:10px;
-}
   border-radius:10px;
 }
 
